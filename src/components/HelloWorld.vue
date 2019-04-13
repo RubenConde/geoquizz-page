@@ -32,29 +32,10 @@
 </template>
 
 <script>
-    import {HTTP} from '../http-common';
-
     export default {
         name: 'HelloWorld',
         props: {
             msg: String
-        },
-        data() {
-            return {
-                posts: [],
-                errors: []
-            }
-        },// Fetches posts when the component is created.
-        mounted() {
-            HTTP.get('ping')
-                .then(response => {
-                    // JSON responses are automatically parsed.
-                    console.log(response.data)
-                })
-                .catch(e => {
-                    console.log(e)
-                    // this.errors.push(e)
-                })
         }
     }
 </script>
