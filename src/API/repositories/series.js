@@ -1,4 +1,4 @@
-import Repository from '../API/Repository'
+import Repository from '../Repository'
 
 const resource = '/series';
 
@@ -16,6 +16,6 @@ export default {
         return Repository.put(resource + '/' + seriesId, data).catch(error => error.response);
     },
     deleteSeries(seriesId) {
-        Repository.delete(resource + '/' + seriesId);
+        return Repository.delete(resource + '/' + seriesId).catch(error => error.response);
     }
 }

@@ -1,8 +1,8 @@
-import gamesRepository from './gamesRepository';
-import usersRepository from './usersRepository';
-import difficultiesRepository from './difficultiesRepository';
-import photosRepository from './photosRepository';
-import seriesRepository from './seriesRepository';
+import gamesRepository from './repositories/games';
+import usersRepository from './repositories/users';
+import difficultiesRepository from './repositories/difficulties';
+import photosRepository from './repositories/photos';
+import seriesRepository from './repositories/series';
 
 const repositories = {
     games: gamesRepository,
