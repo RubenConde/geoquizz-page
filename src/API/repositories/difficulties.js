@@ -1,4 +1,4 @@
-import Repository from '../API/Repository'
+import Repository from '../Repository'
 
 const resource = '/difficulties';
 

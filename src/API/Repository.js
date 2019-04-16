@@ -1,12 +1,15 @@
 import axios from 'axios/index';
 
-const baseDomain = 'https://geoquizz-api.herokuapp.com/';
+const baseDomain = 'http://127.0.0.1:8000/';
 const baseURL = baseDomain + 'api/v1';
 
-let token;
+let token = '';
+
 export default axios.create({
     baseURL,
     headers: {
-        'Authorization': 'Bearer ' + token
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
     }
 })
