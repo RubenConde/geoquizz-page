@@ -2,10 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/store'
+import Buefy from 'buefy'
+import mixins from './mixin/mixins'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
+Vue.use(Buefy);
 Vue.use(Vuex);
+Vue.mixin(mixins);
 
 new Vue({
     router,
