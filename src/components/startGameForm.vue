@@ -30,7 +30,7 @@
                     </div>
                     <div class="column is-full">
                         <!--                        <b-button @click="animateCSS('.hero-body','zoomOut')" type="is-myOrange">PLAY!</b-button>-->
-                        <b-button @click="createGame(newGame)" type="is-myOrange">PLAY!</b-button>
+                        <b-button @click="createAGame" type="is-myOrange">PLAY!</b-button>
                     </div>
                 </div>
             </div>
@@ -54,10 +54,15 @@
             }
         },
         methods: {
-            animateCSS(element, animationName, callback) {
-                const node = document.querySelector(element);
-                node.classList.add('animated', animationName);
-            },
+            createAGame() {
+                this.$store.dispatch('CREATE_GAME', this.newGame).then(resp => {
+                    let self = this;
+                    // if (resp.success)
+                    this.animateCSS('.hero-body', 'zoomOut', function () {
+                        self.$router.push({name: 'about'})
+                    })
+                })
+            }
         },
     }
 </script>
