@@ -1,11 +1,10 @@
 <template>
-    <section class="hero is-info is-fullheight">
+    <section class="hero is-primaryAdmin is-fullheight" id="login">
         <div class="hero-body">
             <div class="container">
                 <div class="columns">
                     <div class="column is-one-third is-offset-one-third is-full-mobile">
                         <login-form></login-form>
-                        {{user}}
                     </div>
                 </div>
             </div>
@@ -25,5 +24,4 @@
 </script>
 
 <style scoped>
-
 </style>

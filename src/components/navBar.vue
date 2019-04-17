@@ -12,7 +12,6 @@
                 <span aria-hidden="true"></span>
             </a>
         </div>
-
         <div :class="{ 'is-active': showNav }" class="navbar-menu">
             <div class="navbar-end">
                 <div class="navbar-item has-dropdown is-hoverable ">

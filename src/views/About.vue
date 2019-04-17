@@ -43,9 +43,10 @@
 </template>
 <script>
     import NavBar from "../components/navBar";
+    import BIcon from "buefy/src/components/icon/Icon";
 
     export default {
-        components: {NavBar}
+        components: {BIcon, NavBar}
     }
 </script>
 <style scoped>

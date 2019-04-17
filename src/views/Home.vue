@@ -7,7 +7,7 @@
                     <div class="columns is-multiline is-vcentered">
                         <div class="column is-4 is-offset-1 is-8-mobile is-offset-2-mobile animated slideInLeft">
                             <figure class="image">
-                                <img src="../assets/img/world.png">
+                                <img src="../assets/img/world.png" alt="Logo">
                             </figure>
                         </div>
                         <div class="column is-offset-1 animated slideInRight">
