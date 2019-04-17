@@ -4,6 +4,7 @@
         <section class="myTabs">
             <b-tabs expanded v-model="activeTab" class="is-primaryAdmin">
                 <b-tab-item icon="gamepad-variant" label="Games">
+                    <games-tab></games-tab>
                 </b-tab-item>
 
                 <b-tab-item icon="map-marker" label="Series">
@@ -26,15 +27,19 @@
     import BTabs from "buefy/src/components/tabs/Tabs";
     import BTabItem from "buefy/src/components/tabs/TabItem";
     import navBarAdmin from '../components/navBarAdmin'
+    import GamesTab from "../components/gamesTab";
 
     export default {
         name: "Admin",
-        components: {BTabItem, BTabs, navBarAdmin},
+        components: {GamesTab, BTabItem, BTabs, navBarAdmin},
         data() {
             return {
                 activeTab: 0,
                 showBooks: false
             }
+        },
+        mounted() {
+            this.getInfo();
         }
     }
 </script>
