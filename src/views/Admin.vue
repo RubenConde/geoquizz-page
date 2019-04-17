@@ -1,5 +1,6 @@
 <template>
     <div id="admin">
+        {{user}}
         <b-button @click="getUserLogged"></b-button>
     </div>
 </template>
@@ -12,9 +13,9 @@
         components: {BButton},
         methods: {
             getUserLogged() {
-                this.$store.dispatch('GET_USER')
+                this.$store.dispatch('LOGOUT')
                     .then(resp => {
-                        console.log(resp)
+                        if(resp.success) this.$router.push({name:'login'})
                     })
             }
         }

@@ -13,8 +13,11 @@
             NavBar
         },
         mounted() {
-            this.getSeries();
-            this.getDifficulties();
+            this.$store.commit('SET_TOKEN', this.token);
+            this.$store.dispatch('GET_SERIES', {fields: '*'});
+            this.$store.dispatch('GET_DIFFICULTIES', {fields: '*'});
+            this.$store.dispatch('GET_GAMES', {fields: '*'});
+            this.$store.dispatch('GET_PHOTOS', {fields: '*'});
         }
     }
 </script>

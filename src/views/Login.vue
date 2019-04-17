@@ -5,6 +5,7 @@
                 <div class="columns">
                     <div class="column is-one-third is-offset-one-third is-full-mobile">
                         <login-form></login-form>
+                        {{user}}
                     </div>
                 </div>
             </div>
