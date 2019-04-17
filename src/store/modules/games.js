@@ -21,7 +21,7 @@ const actions = {
         let data;
         await GameRepository.get(payload).then(response => {
             if (response.data.success)
-                context.commit('SET_GAMES', response.data.games);
+                context.commit('SET_GAMES', response.data.data.games);
             data = response.data;
         });
         return data

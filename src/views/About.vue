@@ -1,7 +1,7 @@
 <template>
     <div id="about">
         <nav-bar></nav-bar>
-        <section class="hero is-fullheight-with-navbar">
+        <section class="hero is-fullheight">
             <div class="hero-body">
                 <div class="container has-text-centered animated zoomIn fast">
                     <div class="columns is-vcentered">
@@ -15,13 +15,19 @@
                                 by
                             </p>
                             <p class="is-text">
-                                <a href="https://rubencondemag.info">Rubén Conde</a>
+                                <a href="https://rubencondemag.info">
+                                    <strong>Rubén Conde</strong>
+                                </a>
                             </p>
                             <p class="is-text">
                                 using
-                                <a href="https://buefy.org">Buefy </a>
+                                <a href="https://buefy.org">
+                                    <strong>Buefy </strong>
+                                </a>
                                 &
-                                <a href="https://vuejs.org"> Vue.js</a>
+                                <a href="https://vuejs.org">
+                                    <strong> Vue.js</strong>
+                                </a>
                             </p>
                         </div>
                     </div>
@@ -29,7 +35,7 @@
             </div>
             <div class="hero-foot">
                 <div class="is-pulled-right">
-                    <router-link class="card-footer-item is-size-7" to="/admin">admin login</router-link>
+                    <router-link class="card-footer-item is-size-7" to="/login">admin login</router-link>
                 </div>
             </div>
         </section>
