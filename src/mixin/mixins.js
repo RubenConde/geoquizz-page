@@ -29,6 +29,13 @@ export default {
                 type: 'is-success',
                 position: 'is-bottom'
             })
+        },
+        getInfo(){
+            this.$store.commit('SET_TOKEN', this.token);
+            this.$store.dispatch('GET_SERIES', {fields: '*', limit: 1000});
+            this.$store.dispatch('GET_DIFFICULTIES', {fields: '*', limit: 1000});
+            this.$store.dispatch('GET_GAMES', {fields: '*', limit: 1000});
+            this.$store.dispatch('GET_PHOTOS', {fields: '*', limit: 1000});
         }
     },
     computed: {

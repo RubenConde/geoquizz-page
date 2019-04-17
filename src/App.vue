@@ -7,11 +7,7 @@
     export default {
         name: 'app',
         mounted() {
-            this.$store.commit('SET_TOKEN', this.token);
-            this.$store.dispatch('GET_SERIES', {fields: '*'});
-            this.$store.dispatch('GET_DIFFICULTIES', {fields: '*'});
-            this.$store.dispatch('GET_GAMES', {fields: '*'});
-            this.$store.dispatch('GET_PHOTOS', {fields: '*'});
+            this.getInfo();
         }
     }
 </script>
@@ -52,7 +48,6 @@
             "warning": ($warning, $warning-invert),
             "danger": ($danger, $danger-invert),
             "myOrange": ($myOrange, $myOrange-invert),
-
             "primaryAdmin": ($primaryAdmin, $primaryAdmin-invert),
             "infoAdmin": ($infoAdmin, $infoAdmin-invert),
             "successAdmin": ($successAdmin, $successAdmin-invert),
@@ -61,9 +56,9 @@
     );
 
     // Links
-        $link: $primary;
-        $link-invert: $primary-invert;
-        $link-focus-border: $primary;
+    $link: $primary;
+    $link-invert: $primary-invert;
+    $link-focus-border: $primary;
 
     // Import Bulma and Buefy styles
     @import "~bulma";
