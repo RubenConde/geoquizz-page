@@ -15,7 +15,7 @@
                         <b-input icon="textbox-password" password-reveal placeholder="Password" type="password"
                                  v-model="userLogin.password"></b-input>
                     </b-field>
-                    <b-button native-type="submit" type="is-info">Login</b-button>
+                    <b-button native-type="submit" type="is-successAdmin">Login</b-button>
                 </form>
             </div>
         </div>
@@ -25,10 +25,11 @@
 <script>
     import BField from "buefy/src/components/field/Field";
     import BButton from "buefy/src/components/button/Button";
+    import BInput from "buefy/src/components/input/Input";
 
     export default {
         name: "LoginForm",
-        components: {BButton, BField},
+        components: {BInput, BButton, BField},
         data() {
             return {
                 userLogin: {

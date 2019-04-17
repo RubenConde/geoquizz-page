@@ -31,7 +31,7 @@ export default {
             })
         }
     },
-    computed:{
+    computed: {
         ...mapState({
             difficulties: state => state.difficulties.difficulties,
             actualGame: state => state.games.actualGame,

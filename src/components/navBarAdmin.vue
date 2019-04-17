@@ -1,0 +1,48 @@
+<template>
+    <nav aria-label="main navigation" class="navbar is-primaryAdmin is-fixed-top" role="navigation">
+        <div class="navbar-brand">
+            <router-link class="navbar-item" to="/">
+                <h1 class="logoText">GéoQuizz</h1>
+            </router-link>
+            <div class="navbar-item toTheRight">
+                <b-button @click="logout" icon-right="logout" title="Logout" type="is-dangerAdmin"></b-button>
+            </div>
+        </div>
+    </nav>
+</template>
+
+<script>
+    import BButton from "buefy/src/components/button/Button";
+
+    export default {
+        name: "navBarAdmin",
+        components: {BButton},
+        data() {
+            return {
+                showNav: false
+            }
+        },
+        methods: {
+            logout() {
+                this.$store.dispatch('LOGOUT')
+                    .then(resp => {
+                        if (resp.success) {
+                            this.showSuccess(resp.message);
+                            this.$router.push({name: 'login'})
+                        } else
+                            this.showError(resp.message())
+                    })
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    .toTheRight {
+        margin-left: auto;
+    }
+
+    .navbar-brand {
+        width: 100%;
+    }
+</style>

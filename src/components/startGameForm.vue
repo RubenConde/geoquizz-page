@@ -2,7 +2,7 @@
     <div class="card is-rounded">
         <div class="card-content">
             <div class="content">
-                <form @submit.prevent="createAGame">
+                <form @submit.prevent="createGame">
                     <b-field label="START PLAYING">
                         <b-input icon="account" placeholder="Your name" v-model="newGame.player"></b-input>
                     </b-field>
@@ -31,10 +31,12 @@
 
 <script>
     import BField from "buefy/src/components/field/Field";
+    import BSelect from "buefy/src/components/select/Select";
+    import BButton from "buefy/src/components/button/Button";
 
     export default {
         name: "startGameForm",
-        components: {BField},
+        components: {BButton, BSelect, BField},
         data() {
             return {
                 newGame: {
@@ -45,7 +47,7 @@
             }
         },
         methods: {
-            createAGame() {
+            createGame() {
                 this.$store.dispatch('CREATE_GAME', this.newGame).then(resp => {
                     let self = this;
                     if (resp.success) {

@@ -4,14 +4,8 @@
     </div>
 </template>
 <script>
-    // @ is an alias to /src
-    import NavBar from '@/components/navBar.vue'
-
     export default {
         name: 'app',
-        components: {
-            NavBar
-        },
         mounted() {
             this.$store.commit('SET_TOKEN', this.token);
             this.$store.dispatch('GET_SERIES', {fields: '*'});
@@ -39,6 +33,17 @@
     $myOrange: #D97904;
     $myOrange-invert: findColorInvert($myOrange);
 
+    $primaryAdmin: #3C8DBC;
+    $primaryAdmin-invert: findColorInvert($primaryAdmin);
+    $infoAdmin: #00C0EF;
+    $infoAdmin-invert: findColorInvert($infoAdmin);
+    $successAdmin: #00A65A;
+    $successAdmin-invert: findColorInvert($successAdmin);
+    $warningAdmin: #F39C12;
+    $warningAdmin-invert: findColorInvert($warningAdmin);
+    $dangerAdmin: #D94A38;
+    $dangerAdmin-invert: findColorInvert($dangerAdmin);
+
     // Setup $colors to use as bulma classes (e.g. 'is-twitter')
     $colors: (
             "primary": ($primary, $primary-invert),
@@ -46,13 +51,19 @@
             "success": ($success, $success-invert),
             "warning": ($warning, $warning-invert),
             "danger": ($danger, $danger-invert),
-            "myOrange": ($myOrange, $myOrange-invert)
+            "myOrange": ($myOrange, $myOrange-invert),
+
+            "primaryAdmin": ($primaryAdmin, $primaryAdmin-invert),
+            "infoAdmin": ($infoAdmin, $infoAdmin-invert),
+            "successAdmin": ($successAdmin, $successAdmin-invert),
+            "warningAdmin": ($warningAdmin, $warningAdmin-invert),
+            "dangerAdmin": ($dangerAdmin, $dangerAdmin-invert),
     );
 
     // Links
-    $link: $primary;
-    $link-invert: $primary-invert;
-    $link-focus-border: $primary;
+        $link: $primary;
+        $link-invert: $primary-invert;
+        $link-focus-border: $primary;
 
     // Import Bulma and Buefy styles
     @import "~bulma";
