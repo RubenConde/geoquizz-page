@@ -28,8 +28,8 @@
     import BTabs from "buefy/src/components/tabs/Tabs";
     import BTabItem from "buefy/src/components/tabs/TabItem";
     import navBarAdmin from '../components/navBarAdmin'
-    import GamesTab from "../components/gamesTab";
-    import SeriesTab from "../components/seriesTab";
+    import GamesTab from "../components/tabs/gamesTab";
+    import SeriesTab from "../components/tabs/seriesTab";
 
     export default {
         name: "Admin",
