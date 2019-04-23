@@ -1,8 +1,8 @@
 <template>
-    <nav aria-label="main navigation" class="navbar is-primaryAdmin is-fixed-top" role="navigation">
+    <nav aria-label="main navigation" class="navbar is-primary is-fixed-top" role="navigation">
         <div class="navbar-brand">
             <router-link class="navbar-item" to="/">
-                <h1 class="logoText">GéoQuizz</h1>
+                <h1 class="logoText">GéoQuizz</h1><small>&nbsp;admin</small>
             </router-link>
             <div class="navbar-item toTheRight">
                 <b-button @click="logout" icon-right="logout" title="Logout" type="is-dangerAdmin"></b-button>

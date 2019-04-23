@@ -15,7 +15,7 @@
                         <b-input icon="textbox-password" password-reveal placeholder="Password" type="password"
                                  v-model="userLogin.password"></b-input>
                     </b-field>
-                    <b-button native-type="submit" type="is-successAdmin">Login</b-button>
+                    <b-button native-type="submit" type="is-success">Login</b-button>
                 </form>
             </div>
         </div>

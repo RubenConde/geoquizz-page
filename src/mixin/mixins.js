@@ -30,21 +30,25 @@ export default {
                 position: 'is-bottom'
             })
         },
-        getInfo(){
+        getInfo() {
             this.$store.commit('SET_TOKEN', this.token);
-            this.$store.dispatch('GET_SERIES', {fields: '*', limit: 1000});
-            this.$store.dispatch('GET_DIFFICULTIES', {fields: '*', limit: 1000});
-            this.$store.dispatch('GET_GAMES', {fields: '*', limit: 1000});
-            this.$store.dispatch('GET_PHOTOS', {fields: '*', limit: 1000});
+            this.$store.dispatch('GET_SERIES', {fields: '*', limit: 1000000});
+            this.$store.dispatch('GET_DIFFICULTIES', {fields: '*', limit: 1000000});
+            this.$store.dispatch('GET_GAMES', {fields: '*', limit: 1000000, sort: 'created_at', order: 'desc'});
+            this.$store.dispatch('GET_PHOTOS', {fields: '*', limit: 1000000});
         }
     },
     computed: {
         ...mapState({
             difficulties: state => state.difficulties.difficulties,
+            difficulty: state => state.difficulties.difficulty,
             actualGame: state => state.games.actualGame,
             games: state => state.games.games,
+            game: state => state.games.game,
             photos: state => state.photos.photos,
+            photo: state => state.photos.photo,
             series: state => state.series.series,
+            aSeries: state => state.series.aSeries,
             user: state => state.users.user,
             token: state => state.users.token,
         })
