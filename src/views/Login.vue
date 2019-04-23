@@ -1,5 +1,5 @@
 <template>
-    <section class="hero is-primaryAdmin is-fullheight" id="login">
+    <section class="hero is-info is-fullheight" id="login">
         <div class="hero-body">
             <div class="container">
                 <div class="columns">

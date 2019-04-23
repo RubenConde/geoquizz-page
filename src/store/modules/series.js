@@ -4,12 +4,16 @@ const SeriesRepository = RepositoryFactory.get('series');
 
 
 const state = {
-    series: []
+    series: [],
+    aSeries: {}
 };
 const getters = {};
 const mutations = {
     SET_SERIES: (state, payload) => {
         state.series = payload
+    },
+    SET_A_SERIES: (state, payload) => {
+        state.aSeries = payload
     },
     ADD_SERIES: (state, payload) => {
         state.series.push({series: payload})
@@ -22,6 +26,16 @@ const actions = {
             .then(response => {
                 if (response.data.success)
                     context.commit('SET_SERIES', response.data.data.series);
+                data = response.data
+            });
+        return data
+    },
+    GET_A_SERIES: async (context, payload) => {
+        let data;
+        await SeriesRepository.getSeries(payload)
+            .then(response => {
+                if (response.data.success)
+                    context.commit('SET_A_SERIES', response.data.data.series)
                 data = response.data
             });
         return data

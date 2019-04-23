@@ -4,9 +4,11 @@
 
 <script>
     import GamesTable from "./gamesTable";
+    import ScoreTable from "./scoreTable";
+
     export default {
         name: "gamesTab",
-        components: {GamesTable}
+        components: {ScoreTable, GamesTable}
     }
 </script>
 

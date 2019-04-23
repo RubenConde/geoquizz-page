@@ -8,6 +8,7 @@
                 </b-tab-item>
 
                 <b-tab-item icon="map-marker" label="Series">
+                    <series-tab></series-tab>
                 </b-tab-item>
 
                 <b-tab-item icon="signal-cellular-3" label="Difficulties">
@@ -28,10 +29,11 @@
     import BTabItem from "buefy/src/components/tabs/TabItem";
     import navBarAdmin from '../components/navBarAdmin'
     import GamesTab from "../components/gamesTab";
+    import SeriesTab from "../components/seriesTab";
 
     export default {
         name: "Admin",
-        components: {GamesTab, BTabItem, BTabs, navBarAdmin},
+        components: {SeriesTab, GamesTab, BTabItem, BTabs, navBarAdmin},
         data() {
             return {
                 activeTab: 0,

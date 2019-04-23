@@ -4,12 +4,16 @@ const DifficultyRepository = RepositoryFactory.get('difficulties');
 
 
 const state = {
-    difficulties: []
+    difficulties: [],
+    difficulty: {}
 };
 const getters = {};
 const mutations = {
     SET_DIFFICULTIES: (state, payload) => {
         state.difficulties = payload
+    },
+    SET_DIFFICULTY: (state, payload) => {
+        state.difficulty = payload
     },
     ADD_DIFFICULTY: (state, payload) => {
         state.difficulties.push({difficulty: payload})
@@ -23,6 +27,16 @@ const actions = {
                 if (response.data.success)
                     context.commit('SET_DIFFICULTIES', response.data.data.difficulties);
                 data = response.data;
+            });
+        return data
+    },
+    GET_DIFFICULTY: async (context, payload) => {
+        let data;
+        await DifficultyRepository.getDifficulty(payload)
+            .then(response => {
+                if (response.data.success)
+                    context.commit('SET_DIFFICULTY', response.data.data.difficulty);
+                data = response.data
             });
         return data
     },

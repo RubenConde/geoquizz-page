@@ -4,12 +4,16 @@ const PhotoRepository = RepositoryFactory.get('photos');
 
 
 const state = {
-    photos: []
+    photos: [],
+    photo: {}
 };
 const getters = {};
 const mutations = {
     SET_PHOTOS: (state, payload) => {
         state.photos = payload
+    },
+    SET_PHOTO: (state, payload) => {
+        state.photo = payload
     },
     ADD_PHOTOS: (state, payload) => {
         state.photos.push({photo: payload})
@@ -22,6 +26,16 @@ const actions = {
             .then(response => {
                 if (response.data.success)
                     context.commit('SET_PHOTOS', response.data.data.photos);
+                data = response.data
+            });
+        return data
+    },
+    GET_PHOTO: async (context, payload) => {
+        let data;
+        await PhotoRepository.getPhoto(payload)
+            .then(response => {
+                if (response.data.success)
+                    context.commit('SET_PHOTO', response.data.data.photo);
                 data = response.data
             });
         return data
