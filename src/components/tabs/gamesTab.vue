@@ -3,12 +3,11 @@
 </template>
 
 <script>
-    import GamesTable from "./gamesTable";
-    import ScoreTable from "./scoreTable";
+    import GamesTable from "./gamesTabItems/gamesTable";
 
     export default {
         name: "gamesTab",
-        components: {ScoreTable, GamesTable}
+        components: {GamesTable}
     }
 </script>
 
