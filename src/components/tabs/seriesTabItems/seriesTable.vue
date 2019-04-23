@@ -58,7 +58,8 @@
                 </template>
             </b-table>
         </div>
-        <b-modal :active.sync="showModal" has-modal-card="">
+        <b-modal :active.sync="showModal" has-modal-card :can-cancel="['x','outside']">
+            <series-info :selectedSeries="selectedSeries"></series-info>
         </b-modal>
     </div>
 </template>
@@ -73,10 +74,11 @@
     import BButton from "buefy/src/components/button/Button";
     import BModal from "buefy/src/components/modal/Modal";
     import BTooltip from "buefy/src/components/tooltip/Tooltip";
+    import SeriesInfo from "./seriesInfo";
 
     export default {
         name: "seriesTable",
-        components: {BTooltip, BModal, BButton, BSelect, BField, BSwitch, BIcon, BTableColumn, BTable},
+        components: {SeriesInfo, BTooltip, BModal, BButton, BSelect, BField, BSwitch, BIcon, BTableColumn, BTable},
         data() {
             return {
                 perPage: 5,
@@ -89,8 +91,8 @@
             }
         },
         methods: {
-            sendInfoModal(seriesId) {
-                this.$store.dispatch('GET_A_SERIES', seriesId)
+            async sendInfoModal(seriesId) {
+                await this.$store.dispatch('GET_A_SERIES', seriesId)
                     .then(response => {
                         if (response.success)
                             this.selectedSeries = response.data.series;
