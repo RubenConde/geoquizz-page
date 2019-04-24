@@ -5,21 +5,20 @@
             <p class="modal-card-title">Series information</p>
         </header>
         <section class="modal-card-body">
-            <div class="columns is-multiline">
+            <div class="columns">
                 <div class="column">
-                    <b-field>
-                        <gmap-autocomplete :value="seriesChanged.city" @place_changed="setPlace" class="input is-small">
-                        </gmap-autocomplete>
-                    </b-field>
+                    <gmap-autocomplete :value="seriesChanged.city" @place_changed="setPlace" class="input is-small">
+                    </gmap-autocomplete>
                 </div>
-                <div class="column is-1">
-                    <b-tooltip :label="'This place has ' + selectedSeries.photos.length + ' photo(s)'" position="is-left">
-                        <b-icon icon="image-multiple" ></b-icon>
+                <div class="column is-1 has-text-centered is-hidden-mobile">
+                    <b-tooltip :label="'This place has ' + selectedSeries.photos.length + ' photo(s)'"
+                               position="is-left">
+                        <b-icon icon="image-multiple"></b-icon>
                     </b-tooltip>
                 </div>
-                <div class="column is-1">
+                <div class="column is-1 has-text-centered is-hidden-mobile">
                     <b-tooltip :label="'This place has ' + selectedSeries.games.length + ' game(s)'" position="is-left">
-                        <b-icon icon="gamepad-variant" ></b-icon>
+                        <b-icon icon="gamepad-variant"></b-icon>
                     </b-tooltip>
                 </div>
             </div>
