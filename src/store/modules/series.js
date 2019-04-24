@@ -35,7 +35,7 @@ const actions = {
         await SeriesRepository.getSeries(payload)
             .then(response => {
                 if (response.data.success)
-                    context.commit('SET_A_SERIES', response.data.data.series)
+                    context.commit('SET_A_SERIES', response.data.data.series);
                 data = response.data
             });
         return data
