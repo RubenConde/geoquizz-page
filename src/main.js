@@ -6,10 +6,15 @@ import store from './store/store'
 import Buefy from 'buefy'
 import mixins from './mixin/mixins'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import { vsUpload } from 'vuesax'
+import 'vuesax/dist/vuesax.css'
+import 'material-icons/iconfont/material-icons.css';
+
 
 Vue.config.productionTip = true;
 Vue.use(Buefy);
 Vue.use(Vuex);
+Vue.use(vsUpload)
 Vue.use(VueGoogleMaps, {
     load: {
         key: "AIzaSyBYvJclxzDhwLyoHs5o0HdOS_fcFiUZj4I",

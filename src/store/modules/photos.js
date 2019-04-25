@@ -1,6 +1,8 @@
 import {RepositoryFactory} from "../../API/RepositoryFactory";
+import axios from "axios";
 
 const PhotoRepository = RepositoryFactory.get('photos');
+const CloudinaryRepository = RepositoryFactory.get('cloudinary');
 
 
 const state = {
@@ -50,6 +52,15 @@ const actions = {
             });
         return data
     },
+    UPLOAD_PHOTO: async (context, payload) => {
+        let data;
+        await CloudinaryRepository.upload(payload)
+            .then(response => {
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+                data = response.data
+            });
+        return data
+    },
     UPDATE_PHOTO: async (context, payload) => {
         let {data} = await PhotoRepository.updatePhoto(payload.id, payload);
         return data
@@ -58,7 +69,6 @@ const actions = {
         await PhotoRepository.deletePhoto(payload);
     }
 };
-
 export default {
     state, getters, mutations, actions
 }

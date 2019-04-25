@@ -16,6 +16,7 @@
                 </b-tab-item>
 
                 <b-tab-item icon="image-multiple" label="Photos">
+                    <photos-tab></photos-tab>
                 </b-tab-item>
 
                 <b-tab-item icon="account-multiple" label="Users">
@@ -32,10 +33,11 @@
     import GamesTab from "../components/tabs/gamesTab";
     import SeriesTab from "../components/tabs/seriesTab";
     import DifficultiesTab from "../components/tabs/difficultiesTab";
+    import PhotosTab from "../components/tabs/photosTab";
 
     export default {
         name: "Admin",
-        components: {DifficultiesTab, SeriesTab, GamesTab, BTabItem, BTabs, navBarAdmin},
+        components: {PhotosTab, DifficultiesTab, SeriesTab, GamesTab, BTabItem, BTabs, navBarAdmin},
         data() {
             return {
                 activeTab: 0,
