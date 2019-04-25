@@ -12,9 +12,11 @@
                 </b-tab-item>
 
                 <b-tab-item icon="signal-cellular-3" label="Difficulties">
+                    <difficulties-tab></difficulties-tab>
                 </b-tab-item>
 
                 <b-tab-item icon="image-multiple" label="Photos">
+                    <photos-tab></photos-tab>
                 </b-tab-item>
 
                 <b-tab-item icon="account-multiple" label="Users">
@@ -30,10 +32,12 @@
     import navBarAdmin from '../components/navBarAdmin'
     import GamesTab from "../components/tabs/gamesTab";
     import SeriesTab from "../components/tabs/seriesTab";
+    import DifficultiesTab from "../components/tabs/difficultiesTab";
+    import PhotosTab from "../components/tabs/photosTab";
 
     export default {
         name: "Admin",
-        components: {SeriesTab, GamesTab, BTabItem, BTabs, navBarAdmin},
+        components: {PhotosTab, DifficultiesTab, SeriesTab, GamesTab, BTabItem, BTabs, navBarAdmin},
         data() {
             return {
                 activeTab: 0,

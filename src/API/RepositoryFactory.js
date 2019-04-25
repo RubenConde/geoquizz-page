@@ -3,6 +3,7 @@ import usersRepository from './repositories/users';
 import difficultiesRepository from './repositories/difficulties';
 import photosRepository from './repositories/photos';
 import seriesRepository from './repositories/series';
+import cloudinaryRepository from './repositories/cloudinary';
 
 const repositories = {
     games: gamesRepository,
@@ -10,6 +11,7 @@ const repositories = {
     difficulties: difficultiesRepository,
     series: seriesRepository,
     photos: photosRepository,
+    cloudinary: cloudinaryRepository
     //other repositories
 };
 
