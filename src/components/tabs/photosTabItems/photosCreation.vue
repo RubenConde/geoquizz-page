@@ -47,7 +47,7 @@
                     </b-field>
                 </div>
                 <div class="column is-one-third">
-                    <gmap-autocomplete @place_changed="setPlace" class="input is-small" v-model="search">
+                    <gmap-autocomplete :value="mapSearch" @place_changed="setPlace" class="input is-small">
                     </gmap-autocomplete>
                     <gmap-map :center="{lat : newPhoto.latitude, lng : newPhoto.longitude}" :options="mapOptions"
                               :zoom="10" class="map">
@@ -98,7 +98,7 @@
                     idSeries: null
                 },
                 uploadInfo: {},
-                search: null
+                mapSearch: ''
             }
         },
         watch: {
@@ -140,7 +140,7 @@
                             this.newPhoto = newPhotoDefault;
                             await this.getInfo();
                             this.filePhoto = null;
-                            this.search = null;
+                            this.mapSearch = '';
                             this.showSuccess(response.message);
                         } else
                             this.showError(response.message)
