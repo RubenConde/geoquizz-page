@@ -1,4 +1,4 @@
-import {mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
     // mixins: [series, photos, difficulties, users, games],
@@ -51,6 +51,7 @@ export default {
             aSeries: state => state.series.aSeries,
             user: state => state.users.user,
             token: state => state.users.token,
-        })
+        }),
+        ...mapGetters(['PHOTOS_BY_SERIES'])
     }
 }

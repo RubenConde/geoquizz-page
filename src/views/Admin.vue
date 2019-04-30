@@ -19,8 +19,8 @@
                     <photos-tab></photos-tab>
                 </b-tab-item>
 
-                <b-tab-item icon="account-multiple" label="Users">
-                </b-tab-item>
+<!--                <b-tab-item icon="account-multiple" label="Users">-->
+<!--                </b-tab-item>-->
             </b-tabs>
         </section>
     </div>
@@ -53,6 +53,6 @@
 <style scoped lang="scss">
 
     .myTabs{
-        margin-top: 50px;
+        margin-top: 60px;
     }
 </style>

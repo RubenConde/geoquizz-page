@@ -101,8 +101,8 @@
             }
         },
         methods: {
-            async sendInfoModal(seriesId) {
-                await this.$store.dispatch('GET_DIFFICULTY', seriesId)
+            async sendInfoModal(diffId) {
+                await this.$store.dispatch('GET_DIFFICULTY', diffId)
                     .then(response => {
                         if (response.success)
                             this.selectedDiff = response.data.difficulty;

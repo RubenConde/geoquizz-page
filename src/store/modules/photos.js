@@ -9,7 +9,11 @@ const state = {
     photos: [],
     photo: {}
 };
-const getters = {};
+const getters = {
+    PHOTOS_BY_SERIES: (state, getters) => (idSeries) => {
+        return state.photos.filter(photo => photo.photo.idSeries === idSeries)
+    }
+};
 const mutations = {
     SET_PHOTOS: (state, payload) => {
         state.photos = payload

@@ -22,11 +22,16 @@
                     </b-field>
                 </div>
                 <div class="column is-one-third">
+                    <a @click="deleteNewPhoto">
+                        <b-icon class="is-pulled-right" icon="delete"
+                                v-if="newPhoto.url !== null && newPhoto.url !== undefined"></b-icon>
+                    </a>
                     <b-field class="has-text-centered">
                         <b-upload :loading="imageLoading" accept="image/png, image/jpeg" class="my" drag-drop
                                   type="is-info" v-model="filePhoto">
                             <section class="section my">
-                                <div class="content has-text-centered" v-if="newPhoto.url === ''">
+                                <div class="content has-text-centered"
+                                     v-if="newPhoto.url === null || newPhoto.url === undefined">
                                     <p>
                                         <b-icon icon="upload" size="is-large"></b-icon>
                                     </p>
@@ -40,12 +45,9 @@
                             </section>
                         </b-upload>
                     </b-field>
-                    <a @click="deleteNewPhoto">
-                        <b-icon class="is-pulled-right" icon="delete" size="is-small" v-if="newPhoto.url!==''"></b-icon>
-                    </a>
                 </div>
                 <div class="column is-one-third">
-                    <gmap-autocomplete @place_changed="setPlace" class="input is-small">
+                    <gmap-autocomplete @place_changed="setPlace" class="input is-small" v-model="search">
                     </gmap-autocomplete>
                     <gmap-map :center="{lat : newPhoto.latitude, lng : newPhoto.longitude}" :options="mapOptions"
                               :zoom="10" class="map">
@@ -86,16 +88,17 @@
                     rotateControl: false,
                     fullscreenControl: false,
                 },
-                filePhoto: {},
+                filePhoto: null,
                 imageLoading: false,
                 newPhoto: {
                     latitude: 48.692054,
                     longitude: -1.553621000000021,
                     description: '',
-                    url: '',
+                    url: null,
                     idSeries: null
                 },
-                uploadInfo: {}
+                uploadInfo: {},
+                search: null
             }
         },
         watch: {
@@ -121,21 +124,23 @@
                 this.newPhoto.longitude = newPos.lng
             },
             async deleteNewPhoto() {
-                this.newPhoto.url = ''
+                this.newPhoto.url = null
             },
             async createNewPhoto() {
                 let newPhotoDefault = {
                     latitude: 48.692054,
                     longitude: -1.553621000000021,
                     description: '',
-                    url: '',
+                    url: null,
                     idSeries: null
                 };
                 await this.$store.dispatch('CREATE_PHOTO', this.newPhoto)
                     .then(async response => {
                         if (response.success) {
-                            await this.getInfo();
                             this.newPhoto = newPhotoDefault;
+                            await this.getInfo();
+                            this.filePhoto = null;
+                            this.search = null;
                             this.showSuccess(response.message);
                         } else
                             this.showError(response.message)
