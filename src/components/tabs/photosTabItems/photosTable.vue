@@ -7,10 +7,18 @@
             </a>
         </header>
         <div class="card-content" v-if="showCard">
+            <b-field label="Series" v-if="isMobile">
+                <b-select expanded placeholder="Available series"
+                          v-model="selectedSeriesMobile">
+                    <option :key="aSeries.series.id" :value="aSeries.series" v-for="aSeries in series">
+                        {{aSeries.series.city}}
+                    </option>
+                </b-select>
+            </b-field>
             <div class="columns is-mobile is-multiline">
-                <div class="column is-one-third is-one-quarter-mobile">
-                    <b-field label="Series">
-                        <b-select id="options" expanded multiple native-size="10" placeholder="Available series"
+                <div class="column is-one-third is-one-quarter-mobile is-hidden-mobile">
+                    <b-field label="Series" v-if="!isMobile">
+                        <b-select expanded multiple native-size="10" placeholder="Available series"
                                   v-model="selectedSeries">
                             <option :key="aSeries.series.id" :value="aSeries.series" v-for="aSeries in series">
                                 {{aSeries.series.city}}
@@ -18,10 +26,12 @@
                         </b-select>
                     </b-field>
                 </div>
-                <div class="column is-two-thirds is-three-quarters-mobile">
+                <div :class="{'is-two-thirds' :!isMobile, 'is-full':isMobile}" class="column">
                     <b-field label="Photos"></b-field>
-                    <div id="gallery" class="columns is-mobile is-multiline">
-                        <div :key="photo.photo.id" class="column is-one-third" v-for="photo in photosBySeries">
+                    <div class="columns is-mobile is-multiline" id="gallery">
+                        <div :class="{'is-one-third' :!isMobile, 'is-half':isMobile}" :key="photo.photo.id"
+                             class="column"
+                             v-for="photo in photosBySeries">
                             <figure class="image">
                                 <img :src="photo.photo.url" @click="sendInfoModal(photo.photo.id)" alt="Photo">
                             </figure>
@@ -71,7 +81,13 @@
                 showCard: true,
                 showModal: false,
                 selectedSeries: [],
-                selectedPhoto: {}
+                selectedSeriesMobile: null,
+                selectedPhoto: {},
+                window: {
+                    width: 0,
+                    height: 0
+                },
+                isMobile: false
             }
         },
         computed: {
@@ -79,7 +95,11 @@
                 if (this.selectedSeries.length === 0) {
                     return []
                 } else {
-                    return this.$store.getters.PHOTOS_BY_SERIES(this.selectedSeries[0].id)
+                    if (this.isMobile) {
+                        return this.$store.getters.PHOTOS_BY_SERIES(this.selectedSeriesMobile.id)
+                    } else {
+                        return this.$store.getters.PHOTOS_BY_SERIES(this.selectedSeries[0].id)
+                    }
                 }
             }
         },
@@ -91,7 +111,19 @@
                         else console.error(response.message)
                     });
                 this.showModal = true
+            },
+            handleResize() {
+                this.window.width = window.innerWidth;
+                this.window.height = window.innerHeight;
+                this.isMobile = this.window.width < 768;
             }
+        },
+        created() {
+            window.addEventListener('resize', this.handleResize);
+            this.handleResize();
+        },
+        destroyed() {
+            window.removeEventListener('resize', this.handleResize)
         }
     }
 </script>
@@ -100,25 +132,24 @@
     img {
         cursor: pointer;
     }
-    #gallery{
+
+    #gallery {
         min-height: 360px;
         max-height: 360px;
         overflow-y: scroll;
     }
-    #gallery::-webkit-scrollbar-track
-    {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+
+    #gallery::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         background-color: #F5F5F5;
     }
 
-    #gallery::-webkit-scrollbar
-    {
+    #gallery::-webkit-scrollbar {
         width: 5px;
         background-color: #F5F5F5;
     }
 
-    #gallery::-webkit-scrollbar-thumb
-    {
+    #gallery::-webkit-scrollbar-thumb {
         background-color: #990019;
         background-image: -webkit-linear-gradient(45deg,
         rgba(255, 255, 255, .2) 25%,
