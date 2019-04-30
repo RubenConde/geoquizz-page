@@ -92,14 +92,12 @@
         },
         computed: {
             photosBySeries() {
-                if (this.selectedSeries.length === 0) {
+                if (this.isMobile && this.selectedSeriesMobile !== null)
+                    return this.$store.getters.PHOTOS_BY_SERIES(this.selectedSeriesMobile.id)
+                else if (this.selectedSeries.length === 0) {
                     return []
                 } else {
-                    if (this.isMobile) {
-                        return this.$store.getters.PHOTOS_BY_SERIES(this.selectedSeriesMobile.id)
-                    } else {
-                        return this.$store.getters.PHOTOS_BY_SERIES(this.selectedSeries[0].id)
-                    }
+                    return this.$store.getters.PHOTOS_BY_SERIES(this.selectedSeries[0].id)
                 }
             }
         },
