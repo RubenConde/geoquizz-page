@@ -39,16 +39,6 @@
         props: ['selectedDiff'],
         data() {
             return {
-                mapOptions: {
-                    controlSize: 20,
-                    draggable: true,
-                    zoomControl: true,
-                    mapTypeControl: true,
-                    scaleControl: false,
-                    streetViewControl: false,
-                    rotateControl: false,
-                    fullscreenControl: false,
-                },
                 diffChanged: {}
             }
         },
@@ -77,8 +67,4 @@
 </script>
 
 <style scoped>
-    .map {
-        width: 100%;
-        height: 300px;
-    }
 </style>
