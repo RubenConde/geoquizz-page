@@ -14,7 +14,7 @@ Vue.use(Buefy);
 Vue.use(Vuex);
 Vue.use(VueGoogleMaps, {
     load: {
-        key: "AIzaSyBYvJclxzDhwLyoHs5o0HdOS_fcFiUZj4I",
+        key: process.env.VUE_APP_MAPS_API_KEY,
         libraries: "places"
     }
 });

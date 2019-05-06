@@ -1,6 +1,5 @@
 import Repository from '../Repository'
 
-
 export default {
     getUser() {
         return Repository.get('/user').catch(error => error.response);
