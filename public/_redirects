@@ -1,1 +1,5 @@
+# This rule is for making work the SPA's (every route will go to the index.html)
 /*    /index.html   200
+
+# Redirect default Netlify subdomain to primary domain
+https://geoquizz.netlify.com/* https://geoquizz.rubencondemag.info/:splat 301!
