@@ -2,6 +2,12 @@ import {mapGetters, mapState} from "vuex";
 
 export default {
     // mixins: [series, photos, difficulties, users, games],
+    data(){return{       window: {
+            width: 0,
+            height: 0
+        },
+        isMobile: false
+    }},
     methods: {
         animateCSS(element, animationName, callback) {
             const node = document.querySelector(element);
@@ -36,6 +42,11 @@ export default {
             this.$store.dispatch('GET_DIFFICULTIES', {fields: '*', limit: 1000000});
             this.$store.dispatch('GET_GAMES', {fields: '*', limit: 1000000, sort: 'created_at', order: 'desc'});
             this.$store.dispatch('GET_PHOTOS', {fields: '*', limit: 1000000});
+        },
+        handleResize() {
+            this.window.width = window.innerWidth;
+            this.window.height = window.innerHeight;
+            this.isMobile = this.window.width < 768;
         }
     },
     computed: {
@@ -53,5 +64,9 @@ export default {
             token: state => state.users.token,
         }),
         ...mapGetters(['PHOTOS_BY_SERIES'])
+    },
+    created() {
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize();
     }
 }

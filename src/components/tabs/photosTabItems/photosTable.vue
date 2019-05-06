@@ -83,11 +83,7 @@
                 selectedSeries: [],
                 selectedSeriesMobile: null,
                 selectedPhoto: {},
-                window: {
-                    width: 0,
-                    height: 0
-                },
-                isMobile: false
+
             }
         },
         computed: {
@@ -113,12 +109,8 @@
             handleResize() {
                 this.window.width = window.innerWidth;
                 this.window.height = window.innerHeight;
-                this.isMobile = this.window.width < 768;
+                this.isMobile = this.window.width < 1024;
             }
-        },
-        created() {
-            window.addEventListener('resize', this.handleResize);
-            this.handleResize();
         },
         destroyed() {
             window.removeEventListener('resize', this.handleResize)

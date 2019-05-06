@@ -1,7 +1,6 @@
 import axios from 'axios/index';
 
-const baseDomain = 'https://geoquizz-api.herokuapp.com/';
-const baseURL = baseDomain + 'api/v1';
+const baseURL = process.env.VUE_APP_GEOQUIZZ_BASE_URL;
 
 export default axios.create({
     baseURL,
