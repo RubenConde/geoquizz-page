@@ -18,10 +18,8 @@
       @close="isSaving = !isSaving"
       class="myLoading"
     >
-      <figure @click="isPaused = !isPaused" class="image">
-        <a>
-          <img alt="Pause" src="../assets/img/saving.svg" />
-        </a>
+      <figure class="image">
+        <img alt="Pause" src="../assets/img/saving.svg" />
       </figure>
     </b-loading>
     <section class="hero is-fullheight">
@@ -31,8 +29,8 @@
             <div class="column is-full"></div>
             <div class="column is-full">
               <div class="columns is-mobile is-vcentered">
-                <div class="column">
-                  <b-taglist :attached="!isMobile">
+                <div class="column is-10">
+                  <b-taglist attached>
                     <b-tag
                       class="animated zoomIn has-text-weight-bold"
                       size="is-large"
@@ -49,6 +47,15 @@
                     >
                       <p id="points">{{ lsGame.score }} pts.</p>
                     </b-tag>
+                    <b-tag
+                      class="animated zoomIn has-text-weight-light"
+                      size="is-large"
+                      type="is-white"
+                      id="plus"
+                      v-show="scoreAct !== 0"
+                    >
+                      <p class="subtitle">+{{ scoreAct }} pts.</p>
+                    </b-tag>
                   </b-taglist>
                 </div>
                 <div class="column ">
@@ -56,23 +63,29 @@
                     @click="isPaused = !isPaused"
                     class="is-pulled-right animated zoomIn"
                     icon-pack="fas"
-                    icon-right="pause"
+                    :icon-right="isMobile ? '' : 'pause'"
                     id="pause"
                     type="is-info"
                     v-if="showPause"
                   >
-                    Pause game
+                    <b-icon icon="pause" pack="fas" v-if="isMobile"></b-icon>
+                    <p v-else>Pause game</p>
                   </b-button>
                   <b-button
                     @click="goNext"
                     class="is-pulled-right next"
                     icon-pack="fas"
-                    icon-right="angle-double-right"
+                    :icon-right="isMobile ? '' : 'angle-double-right'"
                     id="next"
                     type="is-success"
                     v-show="showNext"
                   >
-                    Next picture
+                    <b-icon
+                      icon="angle-double-right"
+                      pack="fas"
+                      v-if="isMobile"
+                    ></b-icon>
+                    <p v-else>Next picture</p>
                   </b-button>
                 </div>
               </div>
@@ -111,7 +124,7 @@
                   </gmap-map>
                 </div>
                 <div
-                  class="column is-half animated bounceInUp has-text-centered-mobile game"
+                  class="column is-half animated bounceInUp has-text-centered-mobile has-text-right game"
                 >
                   <figure>
                     <img
@@ -168,14 +181,18 @@ export default {
     isPaused: false,
     isSaving: false,
     showPause: true,
-    showNext: false
+    showNext: false,
+    startTime: Date.now(),
+    seconds: 0,
+    scoreAct: 0
   }),
   created() {
-    if (localStorage.getItem("actualGame") !== null) {
-      if (this.lsGame.photos.length !== 0) {
-        this.imgIndex = Math.floor(Math.random() * this.lsGame.photos.length);
-        this.gamePhoto = this.lsGame.photos[this.imgIndex];
-      }
+    if (
+      localStorage.getItem("actualGame") !== null &&
+      this.lsGame.photos.length !== 0
+    ) {
+      this.imgIndex = Math.floor(Math.random() * this.lsGame.photos.length);
+      this.gamePhoto = this.lsGame.photos[this.imgIndex];
     } else {
       this.$router.push({ name: "home" });
     }
@@ -194,7 +211,10 @@ export default {
           self.gamePhoto = self.lsGame.photos[self.imgIndex];
           self.showPause = true;
           const efIn = self.isMobile ? "fadeInRight" : "fadeInDown";
-          self.animateCSS(".game", efIn, "", function() {});
+          const itSelf = self;
+          self.animateCSS(".game", efIn, "", function() {
+            itSelf.startTime = Date.now();
+          });
         });
       } else {
         this.$dialog.confirm({
@@ -240,7 +260,6 @@ export default {
     },
     computeScore() {
       let distance = this.getDistance(this.markers[0], this.markers[1]);
-      this.scoreAct = 0;
 
       if (distance < this.lsGame.distance) {
         // si la distance est inférieure à la distance du level
@@ -253,7 +272,28 @@ export default {
         this.scoreAct += 1;
       }
 
+      if (this.seconds < 15) {
+        // points multipliés par 4 pour une réponse en moins de 5s
+        this.scoreAct *= 4;
+      } else if (this.seconds >= 15 && this.seconds < 30) {
+        // points multipliés par 2 pour 1 réponse en moins de 10s
+        this.scoreAct *= 2;
+      } else if (this.seconds >= 30 && this.seconds < 60) {
+        //points pas acquis pour 1 réponse en plus de 20s
+        this.scoreAct *= 1;
+      } else if (this.seconds > 60) {
+        //points pas acquis pour 1 réponse en plus de 20s
+        this.scoreAct = 0;
+      }
+
       this.lsGame.score += this.scoreAct;
+      const self = this;
+      this.animateCSS("#plus", "fadeInUp", "fast", function() {
+        const itSelf = self;
+        self.animateCSS("#plus", "fadeOutUp", "fast", function() {
+          itSelf.scoreAct = 0;
+        });
+      });
     },
     getDistance(p1, p2) {
       const rad = function(x) {
@@ -273,6 +313,7 @@ export default {
     },
     async getResult(cursorPos) {
       if (this.markers.length < 2) {
+        this.stopTimer();
         const self = this;
         this.animateCSS("#points", "rubberBand", "", function() {});
         this.animateCSS("#next", "zoomIn", "faster", function() {});
@@ -298,6 +339,10 @@ export default {
         this.$store.commit("SET_ACTUAL_GAME", this.lsGame);
         this.lsGame = this.actualGame;
       }
+    },
+    stopTimer() {
+      let millis = Date.now() - this.startTime;
+      this.seconds = Math.floor(millis / 1000);
     }
   }
 };
