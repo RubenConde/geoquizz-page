@@ -13,6 +13,7 @@
         default-sort="game.score"
         default-sort-direction="desc"
         hoverable
+        narrowed
         striped
       >
         <template slot-scope="props">
