@@ -1,69 +1,105 @@
 <template>
-    <div class="card is-rounded">
-        <div class="card-content">
-            <div class="content">
-                <form @submit.prevent="createGame">
-                    <b-field label="START PLAYING">
-                        <b-input icon="account" placeholder="Your name" v-model="newGame.player"></b-input>
-                    </b-field>
-                    <b-field>
-                        <b-select expanded icon="signal-cellular-3" placeholder="Difficulty"
-                                  v-model="newGame.idDifficulty">
-                            <option :key="option.difficulty.id" :value="option.difficulty.id"
-                                    v-for="option in difficulties">
-                                {{ option.difficulty.name }}
-                            </option>
-                        </b-select>
-                    </b-field>
-                    <b-field>
-                        <b-select expanded icon="map-marker" placeholder="Place" v-model="newGame.idSeries">
-                            <option :key="option.series.id" :value="option.series.id" v-for="option in series">
-                                {{ option.series.city }}
-                            </option>
-                        </b-select>
-                    </b-field>
-                    <b-button native-type="submit" type="is-myOrange">PLAY!</b-button>
-                </form>
-            </div>
-        </div>
+  <div class="card is-rounded">
+    <div class="card-content">
+      <div class="content">
+        <form @submit.prevent="createGame">
+          <b-field label="START PLAYING">
+            <b-input
+              icon="account"
+              placeholder="Your name"
+              v-model="newGame.player"
+            ></b-input>
+          </b-field>
+          <b-field>
+            <b-select
+              expanded
+              icon="signal-cellular-3"
+              placeholder="Difficulty"
+              v-model="newGame.idDifficulty"
+            >
+              <option
+                :key="option.difficulty.id"
+                :value="option.difficulty.id"
+                v-for="option in difficulties"
+              >
+                {{ option.difficulty.name }}
+              </option>
+            </b-select>
+          </b-field>
+          <b-field>
+            <b-select
+              expanded
+              icon="map-marker"
+              placeholder="Place"
+              v-model="newGame.idSeries"
+            >
+              <option
+                :key="option.series.id"
+                :value="option.series.id"
+                v-for="option in series"
+              >
+                {{ option.series.city }}
+              </option>
+            </b-select>
+          </b-field>
+          <b-button native-type="submit" type="is-myOrange">PLAY!</b-button>
+        </form>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    import BField from "buefy/src/components/field/Field";
-    import BSelect from "buefy/src/components/select/Select";
-    import BButton from "buefy/src/components/button/Button";
+import BField from "buefy/src/components/field/Field";
+import BSelect from "buefy/src/components/select/Select";
+import BButton from "buefy/src/components/button/Button";
 
-    export default {
-        name: "startGameForm",
-        components: {BButton, BSelect, BField},
-        data() {
-            return {
-                newGame: {
-                    player: null,
-                    idSeries: null,
-                    idDifficulty: null
-                }
-            }
-        },
-        methods: {
-            createGame() {
-                this.$store.dispatch('CREATE_GAME', this.newGame).then(resp => {
-                    let self = this;
-                    if (resp.success) {
-                        this.showSuccess(resp.message);
-                        this.animateCSS('.hero-body', 'zoomOut', function () {
-                            self.$router.push({name: 'about'})
-                        });
-                    } else {
-                        this.showError(resp.message);
-                    }
-                })
-            },
-        },
+export default {
+  name: "startGameForm",
+  components: { BButton, BSelect, BField },
+  data() {
+    return {
+      newGame: {
+        player: null,
+        idSeries: null,
+        idDifficulty: null
+      }
+    };
+  },
+  methods: {
+    buildActualGame(newGame) {
+      let photos = this.PHOTOS_BY_SERIES(newGame.idSeries);
+      let series = this.SERIES_BY_ID(newGame.idSeries);
+      let difficulty = this.DIFFICULTY_BY_ID(newGame.idDifficulty);
+      return {
+        ...newGame,
+        steps: difficulty[0].difficulty.numberOfPhotos,
+        distance: difficulty[0].difficulty.distance,
+        stepsDone: 0,
+        photos: photos,
+        initialPosition: {
+          lat: series[0].series.latitude,
+          lng: series[0].series.longitude,
+          zoom: series[0].series.zoom
+        }
+      };
+    },
+    createGame() {
+      this.$store.dispatch("CREATE_GAME", this.newGame).then(async resp => {
+        let self = this;
+        let actualGame = await this.buildActualGame(resp.data);
+        if (resp.success) {
+          this.$store.commit("SET_ACTUAL_GAME", actualGame);
+          this.animateCSS(".hero-body", "bounceOut", "", function() {
+            self.$router.push({ name: "game" });
+          });
+        } else {
+          this.showError(resp.message);
+        }
+      });
     }
+  }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
