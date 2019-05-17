@@ -46,6 +46,13 @@ export default {
       this.$store.commit("SET_TOKEN", this.token);
       this.$store.dispatch("GET_SERIES", { fields: "*", limit: 1000000 });
       this.$store.dispatch("GET_DIFFICULTIES", { fields: "*", limit: 1000000 });
+      this.$store.dispatch("GET_BESTS", {
+        fields: "*",
+        limit: 10,
+        sort: "score",
+        order: "desc",
+        filter: "status:=:0"
+      });
       this.$store.dispatch("GET_GAMES", {
         fields: "*",
         limit: 1000000,
@@ -66,6 +73,7 @@ export default {
       difficulty: state => state.difficulties.difficulty,
       actualGame: state => state.games.actualGame,
       games: state => state.games.games,
+      bests: state => state.games.bests,
       game: state => state.games.game,
       photos: state => state.photos.photos,
       photo: state => state.photos.photo,

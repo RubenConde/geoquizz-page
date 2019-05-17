@@ -5,6 +5,7 @@
         <form @submit.prevent="createGame">
           <b-field label="START PLAYING">
             <b-input
+              required
               icon="account"
               placeholder="Your name"
               v-model="newGame.player"
@@ -13,6 +14,7 @@
           <b-field>
             <b-select
               expanded
+              required
               icon="signal-cellular-3"
               placeholder="Difficulty"
               v-model="newGame.idDifficulty"
@@ -29,6 +31,7 @@
           <b-field>
             <b-select
               expanded
+              required
               icon="map-marker"
               placeholder="Place"
               v-model="newGame.idSeries"
@@ -42,7 +45,13 @@
               </option>
             </b-select>
           </b-field>
-          <b-button :disabled="isCreating" :loading="isCreating" native-type="submit" type="is-myOrange">PLAY!</b-button>
+          <b-button
+            :disabled="isCreating"
+            :loading="isCreating"
+            native-type="submit"
+            type="is-myOrange"
+            >PLAY!</b-button
+          >
         </form>
       </div>
     </div>
@@ -53,10 +62,12 @@
 import BField from "buefy/src/components/field/Field";
 import BSelect from "buefy/src/components/select/Select";
 import BButton from "buefy/src/components/button/Button";
+import BIcon from "buefy/src/components/icon/Icon";
+import BInput from "buefy/src/components/input/Input";
 
 export default {
   name: "startGameForm",
-  components: { BButton, BSelect, BField },
+  components: { BInput, BIcon, BButton, BSelect, BField },
   data() {
     return {
       newGame: {
@@ -64,7 +75,7 @@ export default {
         idSeries: null,
         idDifficulty: null
       },
-      isCreating:false
+      isCreating: false
     };
   },
   methods: {
@@ -92,9 +103,9 @@ export default {
         if (resp.success === true) {
           let actualGame = await this.buildActualGame(resp.data);
           this.$store.commit("SET_ACTUAL_GAME", actualGame);
-          this.animateCSS(".hero-body", "bounceOut", "", function () {
+          this.animateCSS(".hero-body", "bounceOut", "", function() {
             self.isCreating = false;
-            self.$router.push({name: "game"});
+            self.$router.push({ name: "game" });
           });
         } else {
           this.isCreating = false;
