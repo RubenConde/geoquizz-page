@@ -9,20 +9,19 @@
   "dependencies": {
     "animate.css": "^3.7.0",
     "axios": "^0.18.0",
-    "buefy": "^0.7.4",
+    "buefy": "^0.7.5",
     "core-js": "^2.6.5",
-    "material-icons": "^0.3.1",
     "vue": "^2.6.6",
-    "vue-router": "^3.0.1",
+    "vue-router": "^3.0.6",
     "vue2-google-maps": "^0.10.6",
-    "vuex": "^3.0.1"
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.5.0",
-    "@vue/cli-service": "^3.5.0",
-    "vue-template-compiler": "^2.5.21",
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "sass": "^1.20.1",
     "sass-loader": "^7.1.0",
-    "sass": "^1.20.1"
+    "vue-template-compiler": "^2.5.21"
   },
   "postcss": {
     "plugins": {
@@ -33,5 +32,21 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "description": "GeoQuizz game",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RubenConde/geoquizzWeb.git"
+  },
+  "keywords": [
+    "game",
+    "geoquizz"
+  ],
+  "author": "Rubén Conde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RubenConde/geoquizzWeb/issues"
+  },
+  "homepage": "https://github.com/RubenConde/geoquizzWeb#readme"
 }

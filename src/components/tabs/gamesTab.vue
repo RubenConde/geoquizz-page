@@ -1,16 +1,14 @@
 <template>
-    <games-table></games-table>
+  <games-table></games-table>
 </template>
 
 <script>
-    import GamesTable from "./gamesTabItems/gamesTable";
+import GamesTable from "./gamesTabItems/gamesTable";
 
-    export default {
-        name: "gamesTab",
-        components: {GamesTable}
-    }
+export default {
+  name: "gamesTab",
+  components: { GamesTable }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
