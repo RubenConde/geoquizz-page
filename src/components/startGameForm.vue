@@ -92,8 +92,8 @@ export default {
         if (resp.success === true) {
           let actualGame = await this.buildActualGame(resp.data);
           this.$store.commit("SET_ACTUAL_GAME", actualGame);
-          this.isCreating = false;
           this.animateCSS(".hero-body", "bounceOut", "", function () {
+            self.isCreating = false;
             self.$router.push({name: "game"});
           });
         } else {

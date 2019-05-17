@@ -61,7 +61,13 @@
             numeric
             sortable
           >
-            {{ props.row.game.status === 1 ? "Started" : "Finalized" }}
+            {{
+              props.row.game.status === 1
+                ? "Started"
+                : props.row.game.status === 2
+                ? "Not in board"
+                : "Finalized"
+            }}
           </b-table-column>
           <b-table-column
             centered
