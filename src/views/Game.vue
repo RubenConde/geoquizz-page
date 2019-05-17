@@ -13,6 +13,17 @@
         </a>
       </figure>
     </b-loading>
+    <b-loading
+      :active.sync="isSaving"
+      @close="isSaving = !isSaving"
+      class="myLoading"
+    >
+      <figure @click="isPaused = !isPaused" class="image">
+        <a>
+          <img alt="Pause" src="../assets/img/saving.svg" />
+        </a>
+      </figure>
+    </b-loading>
     <section class="hero is-fullheight">
       <div class="hero-body">
         <div class="container">
@@ -74,21 +85,8 @@
                 class="progress is-primary animated zoomInUp"
               ></progress>
             </div>
-            <div class="column is-full game">
+            <div class="column is-full">
               <div class="columns">
-                <div
-                  class="column is-half animated bounceInUp has-text-centered-mobile"
-                >
-                  <figure>
-                    <img
-                      :alt="gamePhoto.photo.description"
-                      :src="gamePhoto.photo.url"
-                    />
-                  </figure>
-                  <h1 class="subtitle is-7" style="color:white">
-                    Hint: {{ gamePhoto.photo.description }}
-                  </h1>
-                </div>
                 <div class="column is-half animated bounceInDown">
                   <gmap-map
                     :center="{
@@ -111,6 +109,19 @@
                       v-for="(marker, index) in markers"
                     />
                   </gmap-map>
+                </div>
+                <div
+                  class="column is-half animated bounceInUp has-text-centered-mobile game"
+                >
+                  <figure>
+                    <img
+                      :alt="gamePhoto.photo.description"
+                      :src="gamePhoto.photo.url"
+                    />
+                  </figure>
+                  <h1 class="subtitle is-7" style="color:white">
+                    Hint: {{ gamePhoto.photo.description }}
+                  </h1>
                 </div>
               </div>
             </div>
@@ -155,26 +166,35 @@ export default {
       ]
     },
     isPaused: false,
+    isSaving: false,
     showPause: true,
     showNext: false
   }),
   created() {
-    this.imgIndex = Math.floor(Math.random() * this.lsGame.photos.length);
-    this.gamePhoto = this.lsGame.photos[this.imgIndex];
+    if (localStorage.getItem("actualGame") !== null) {
+      if (this.lsGame.photos.length !== 0) {
+        this.imgIndex = Math.floor(Math.random() * this.lsGame.photos.length);
+        this.gamePhoto = this.lsGame.photos[this.imgIndex];
+      }
+    } else {
+      this.$router.push({ name: "home" });
+    }
   },
   methods: {
     goNext() {
       if (this.lsGame.stepsDone < this.lsGame.steps) {
+        this.markers = [];
         const self = this;
         this.animateCSS("#next", "zoomOut", "faster", function() {
           self.showNext = false;
         });
-        this.animateCSS(".game", "fadeOutLeft", "", function() {
+        const efOut = this.isMobile ? "fadeOutLeft" : "fadeOutDown";
+        this.animateCSS(".game", efOut, "", function() {
           self.imgIndex = Math.floor(Math.random() * self.lsGame.photos.length);
           self.gamePhoto = self.lsGame.photos[self.imgIndex];
-          self.markers = [];
           self.showPause = true;
-          self.animateCSS(".game", "fadeInRight", "", function() {});
+          const efIn = self.isMobile ? "fadeInRight" : "fadeInDown";
+          self.animateCSS(".game", efIn, "", function() {});
         });
       } else {
         this.$dialog.confirm({
@@ -189,11 +209,13 @@ export default {
           hasIcon: true,
           onCancel: async () => {
             const self = this;
+            this.isSaving = true;
             await this.$store.dispatch("UPDATE_GAME", {
               id: this.lsGame.id,
               score: this.lsGame.score,
               status: 2
             });
+            this.isSaving = false;
             localStorage.removeItem("actualGame");
             this.animateCSS(".hero-body", "bounceOut", "", function() {
               self.$router.push({ name: "home" });
@@ -201,11 +223,13 @@ export default {
           },
           onConfirm: async () => {
             const self = this;
+            this.isSaving = true;
             await this.$store.dispatch("UPDATE_GAME", {
               id: this.lsGame.id,
               score: this.lsGame.score,
               status: 0
             });
+            this.isSaving = false;
             localStorage.removeItem("actualGame");
             this.animateCSS(".hero-body", "bounceOut", "", function() {
               self.$router.push({ name: "home" });
@@ -286,7 +310,7 @@ export default {
 }
 
 .myLoading {
-  opacity: 20%;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 progress {
@@ -301,6 +325,10 @@ progress {
 
 img {
   max-height: 350px;
+}
+
+.game {
+  min-height: 396px;
 }
 
 #name {
