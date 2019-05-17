@@ -42,7 +42,7 @@
               </option>
             </b-select>
           </b-field>
-          <b-button native-type="submit" type="is-myOrange">PLAY!</b-button>
+          <b-button :disabled="isCreating" :loading="isCreating" native-type="submit" type="is-myOrange">PLAY!</b-button>
         </form>
       </div>
     </div>
@@ -63,7 +63,8 @@ export default {
         player: null,
         idSeries: null,
         idDifficulty: null
-      }
+      },
+      isCreating:false
     };
   },
   methods: {
@@ -84,16 +85,19 @@ export default {
         }
       };
     },
-    createGame() {
+    async createGame() {
+      this.isCreating = true;
       this.$store.dispatch("CREATE_GAME", this.newGame).then(async resp => {
         let self = this;
-        let actualGame = await this.buildActualGame(resp.data);
-        if (resp.success) {
+        if (resp.success === true) {
+          let actualGame = await this.buildActualGame(resp.data);
           this.$store.commit("SET_ACTUAL_GAME", actualGame);
-          this.animateCSS(".hero-body", "bounceOut", "", function() {
-            self.$router.push({ name: "game" });
+          this.isCreating = false;
+          this.animateCSS(".hero-body", "bounceOut", "", function () {
+            self.$router.push({name: "game"});
           });
         } else {
+          this.isCreating = false;
           this.showError(resp.message);
         }
       });
