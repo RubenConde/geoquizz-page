@@ -54,7 +54,7 @@
                       id="plus"
                       v-show="scoreAct !== 0"
                     >
-                      <p class="subtitle">+{{ scoreAct }} pts.</p>
+                      <p class="subtitle">+{{ scoreAct }}</p>
                     </b-tag>
                   </b-taglist>
                 </div>
