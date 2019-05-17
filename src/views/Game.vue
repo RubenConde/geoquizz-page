@@ -30,7 +30,7 @@
             <div class="column is-full">
               <div class="columns is-mobile is-vcentered">
                 <div class="column is-10">
-                  <b-taglist attached>
+                  <b-taglist :attached="!isMobile">
                     <b-tag
                       class="animated zoomIn has-text-weight-bold"
                       size="is-large"
@@ -40,6 +40,7 @@
                         {{ lsGame.player }}
                       </p>
                     </b-tag>
+                    <div class="column is-full-mobile" v-if="isMobile"></div>
                     <b-tag
                       class="animated zoomIn has-text-weight-light"
                       size="is-large"
@@ -49,9 +50,9 @@
                     </b-tag>
                     <b-tag
                       class="animated zoomIn has-text-weight-light"
+                      id="plus"
                       size="is-large"
                       type="is-white"
-                      id="plus"
                       v-show="scoreAct !== 0"
                     >
                       <p class="subtitle">+{{ scoreAct }}</p>
@@ -60,10 +61,10 @@
                 </div>
                 <div class="column ">
                   <b-button
+                    :icon-right="isMobile ? '' : 'pause'"
                     @click="isPaused = !isPaused"
                     class="is-pulled-right animated zoomIn"
                     icon-pack="fas"
-                    :icon-right="isMobile ? '' : 'pause'"
                     id="pause"
                     type="is-info"
                     v-if="showPause"
@@ -72,10 +73,10 @@
                     <p v-else>Pause game</p>
                   </b-button>
                   <b-button
+                    :icon-right="isMobile ? '' : 'angle-double-right'"
                     @click="goNext"
                     class="is-pulled-right next"
                     icon-pack="fas"
-                    :icon-right="isMobile ? '' : 'angle-double-right'"
                     id="next"
                     type="is-success"
                     v-show="showNext"
@@ -374,10 +375,5 @@ img {
 
 .game {
   min-height: 396px;
-}
-
-#name {
-  overflow: hidden;
-  max-width: 100px;
 }
 </style>

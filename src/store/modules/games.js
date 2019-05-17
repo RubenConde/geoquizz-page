@@ -4,6 +4,7 @@ const GameRepository = RepositoryFactory.get("games");
 
 const state = {
   games: [],
+  bests:[],
   actualGame: {},
   game: {}
 };
@@ -11,6 +12,9 @@ const getters = {};
 const mutations = {
   SET_GAMES: (state, payload) => {
     state.games = payload;
+  },
+  SET_BESTS: (state, payload) => {
+    state.bests = payload;
   },
   SET_GAME: (state, payload) => {
     state.game = payload;
@@ -26,6 +30,15 @@ const actions = {
     await GameRepository.get(payload).then(response => {
       if (response.data.success)
         context.commit("SET_GAMES", response.data.data.games);
+      data = response.data;
+    });
+    return data;
+  },
+  GET_BESTS: async (context, payload) => {
+    let data;
+    await GameRepository.get(payload).then(response => {
+      if (response.data.success)
+        context.commit("SET_BESTS", response.data.data.games);
       data = response.data;
     });
     return data;
