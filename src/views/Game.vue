@@ -7,7 +7,7 @@
       @close="isPaused = !isPaused"
       class="myLoading"
     >
-      <figure @click="isPaused = !isPaused" class="image">
+      <figure @click="stopPause" class="image">
         <a>
           <img alt="Pause" src="../assets/img/pause.svg" />
         </a>
@@ -27,7 +27,7 @@
         <div class="container">
           <div class="columns is-mobile is-multiline is-vcentered">
             <div class="column is-full"></div>
-            <div class="column is-full">
+            <div v-if="!isMobile" class="column is-full">
               <div class="columns is-mobile is-vcentered">
                 <div class="column is-10">
                   <b-taglist :attached="!isMobile">
@@ -62,7 +62,7 @@
                 <div class="column ">
                   <b-button
                     :icon-right="isMobile ? '' : 'pause'"
-                    @click="isPaused = !isPaused"
+                    @click="pauseGame"
                     class="is-pulled-right animated zoomIn"
                     icon-pack="fas"
                     id="pause"
@@ -91,7 +91,7 @@
                 </div>
               </div>
             </div>
-            <div class="column is-full">
+            <div v-if="!isMobile" class="column is-full">
               <progress
                 :max="lsGame.steps"
                 :title="lsGame.stepsDone + '/' + lsGame.steps + ' pictures'"
@@ -123,6 +123,91 @@
                       v-for="(marker, index) in markers"
                     />
                   </gmap-map>
+                </div>
+                <div v-if="isMobile" class="column">
+                  <div class="columns is-mobile is-multiline is-vcentered">
+                    <div class="column is-full">
+                      <div class="columns is-mobile is-vcentered">
+                        <div class="column is-10">
+                          <b-taglist :attached="!isMobile">
+                            <b-tag
+                              class="animated zoomIn has-text-weight-bold"
+                              size="is-large"
+                              type="is-primary"
+                            >
+                              <p id="name">
+                                {{ lsGame.player }}
+                              </p>
+                            </b-tag>
+                            <div
+                              class="column is-full-mobile"
+                              v-if="isMobile"
+                            ></div>
+                            <b-tag
+                              class="animated zoomIn has-text-weight-light"
+                              size="is-large"
+                              type="is-warning"
+                            >
+                              <p id="points">{{ lsGame.score }} pts.</p>
+                            </b-tag>
+                            <b-tag
+                              class="animated zoomIn has-text-weight-light"
+                              id="plus"
+                              size="is-large"
+                              type="is-white"
+                              v-show="scoreAct !== 0"
+                            >
+                              <p class="subtitle">+{{ scoreAct }}</p>
+                            </b-tag>
+                          </b-taglist>
+                        </div>
+                        <div class="column ">
+                          <b-button
+                            :icon-right="isMobile ? '' : 'pause'"
+                            @click="pauseGame"
+                            class="is-pulled-right animated zoomIn"
+                            icon-pack="fas"
+                            id="pause"
+                            type="is-info"
+                            v-if="showPause"
+                          >
+                            <b-icon
+                              icon="pause"
+                              pack="fas"
+                              v-if="isMobile"
+                            ></b-icon>
+                            <p v-else>Pause game</p>
+                          </b-button>
+                          <b-button
+                            :icon-right="isMobile ? '' : 'angle-double-right'"
+                            @click="goNext"
+                            class="is-pulled-right next"
+                            icon-pack="fas"
+                            id="next"
+                            type="is-success"
+                            v-show="showNext"
+                          >
+                            <b-icon
+                              icon="angle-double-right"
+                              pack="fas"
+                              v-if="isMobile"
+                            ></b-icon>
+                            <p v-else>Next picture</p>
+                          </b-button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column is-full">
+                      <progress
+                        :max="lsGame.steps"
+                        :title="
+                          lsGame.stepsDone + '/' + lsGame.steps + ' pictures'
+                        "
+                        :value="lsGame.stepsDone"
+                        class="progress is-primary animated zoomInUp"
+                      ></progress>
+                    </div>
+                  </div>
                 </div>
                 <div
                   class="column is-half animated bounceInUp has-text-centered-mobile has-text-right game"
@@ -185,7 +270,9 @@ export default {
     showNext: false,
     startTime: Date.now(),
     seconds: 0,
-    scoreAct: 0
+    scoreAct: 0,
+    pauseTime: null,
+    timePaused: 0
   }),
   created() {
     if (
@@ -263,27 +350,22 @@ export default {
       let distance = this.getDistance(this.markers[0], this.markers[1]);
 
       if (distance < this.lsGame.distance) {
-        // si la distance est inférieure à la distance du level
         this.scoreAct += 5;
       } else if (distance < 2 * this.lsGame.distance) {
-        // si la distance est inférieure  2 * la distance du level
         this.scoreAct += 3;
       } else if (distance < 3 * this.lsGame.distance) {
-        // si la distance est inférieure  3 * la distance du level
         this.scoreAct += 1;
       }
 
-      if (this.seconds < 15) {
-        // points multipliés par 4 pour une réponse en moins de 5s
+      const timePlayed = this.seconds - this.timePaused;
+
+      if (timePlayed < 15) {
         this.scoreAct *= 4;
-      } else if (this.seconds >= 15 && this.seconds < 30) {
-        // points multipliés par 2 pour 1 réponse en moins de 10s
+      } else if (timePlayed >= 15 && timePlayed < 30) {
         this.scoreAct *= 2;
-      } else if (this.seconds >= 30 && this.seconds < 60) {
-        //points pas acquis pour 1 réponse en plus de 20s
+      } else if (timePlayed >= 30 && timePlayed < 60) {
         this.scoreAct *= 1;
-      } else if (this.seconds > 60) {
-        //points pas acquis pour 1 réponse en plus de 20s
+      } else if (timePlayed > 60) {
         this.scoreAct = 0;
       }
 
@@ -344,6 +426,16 @@ export default {
     stopTimer() {
       let millis = Date.now() - this.startTime;
       this.seconds = Math.floor(millis / 1000);
+    },
+    stopPause() {
+      let millis = Date.now() - this.pauseTime;
+      this.timePaused = Math.floor(millis / 1000);
+      this.pauseTime = null;
+      this.isPaused = !this.isPaused;
+    },
+    pauseGame() {
+      this.pauseTime = Date.now();
+      this.isPaused = !this.isPaused;
     }
   }
 };
