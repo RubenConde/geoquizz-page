@@ -28,24 +28,49 @@
           <a class="navbar-link is-hidden-touch"> More </a>
           <div class="navbar-dropdown is-right">
             <router-link class="navbar-item" to="/about">About</router-link>
-            <a class="navbar-item"> <strong>Top 10!</strong> </a>
-            <a class="navbar-item"> Instructions </a>
+            <a
+              class="navbar-item"
+              @click="isCardModalActive = !isCardModalActive"
+            >
+              <strong>Top 10!</strong>
+            </a>
+            <a class="navbar-item" @click="isInstructions = !isInstructions">
+              Instructions
+            </a>
             <hr class="navbar-divider" />
             <a class="navbar-item"> API </a>
           </div>
         </div>
       </div>
     </div>
+    <b-modal :active.sync="isCardModalActive" :width="500">
+      <score-table></score-table>
+    </b-modal>
+    <b-modal :active.sync="isInstructions" :width="500">
+      <instructions></instructions>
+    </b-modal>
   </nav>
 </template>
 
 <script>
+import ScoreTable from "./scoreTable";
+import BModal from "buefy/src/components/modal/Modal";
+import Instructions from "./intructions";
 export default {
   name: "navBar",
+  components: { Instructions, BModal, ScoreTable },
   data() {
     return {
-      showNav: false
+      showNav: false,
+      isCardModalActive: false,
+      isInstructions: false
     };
+  },
+  mounted() {
+    if (!localStorage.getItem("instructions")) {
+      this.isInstructions = true;
+      localStorage.setItem("instructions", true);
+    }
   }
 };
 </script>

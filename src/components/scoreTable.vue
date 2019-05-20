@@ -2,38 +2,25 @@
   <div class="card">
     <header class="card-header">
       <p class="card-header-title">Top 10</p>
-      <a
-        @click="showCard = !showCard"
-        aria-label="more options"
-        class="card-header-icon"
-      >
-        <b-icon :icon="showCard ? 'chevron-up' : 'chevron-down'"></b-icon>
+      <a class="card-header-icon">
+        <b-icon icon="trophy" pack="fas"></b-icon>
       </a>
     </header>
-    <div class="card-content" v-if="showCard">
+    <div class="card-content">
       <b-table
-        :data="games"
+        :data="bests"
         :mobile-cards="hasMobileCards"
-        :paginated="isPaginated"
-        :per-page="10"
-        :show-detail-icon="false"
-        aria-current-label="Current page"
-        aria-next-label="Next page"
-        aria-page-label="Page"
-        aria-previous-label="Previous page"
         default-sort="game.score"
         default-sort-direction="desc"
-        detailed
         hoverable
         narrowed
-        sortable
         striped
       >
         <template slot-scope="props">
-          <b-table-column field="game.player" label="Player" sortable>
+          <b-table-column field="game.player" label="Player">
             {{ props.row.game.player }}
           </b-table-column>
-          <b-table-column field="game.score" label="Score" numeric sortable>
+          <b-table-column field="game.score" label="Score" numeric>
             {{ props.row.game.score }}
           </b-table-column>
         </template>
@@ -70,9 +57,7 @@ export default {
   data() {
     return {
       showCard: true,
-      hasMobileCards: false,
-      isPaginated: true,
-      perPage: 10
+      hasMobileCards: false
     };
   }
 };

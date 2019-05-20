@@ -7,10 +7,19 @@
       @close="isPaused = !isPaused"
       class="myLoading"
     >
-      <figure @click="isPaused = !isPaused" class="image">
+      <figure @click="stopPause" class="image">
         <a>
           <img alt="Pause" src="../assets/img/pause.svg" />
         </a>
+      </figure>
+    </b-loading>
+    <b-loading
+      :active.sync="isSaving"
+      @close="isSaving = !isSaving"
+      class="myLoading"
+    >
+      <figure class="image">
+        <img alt="Pause" src="../assets/img/saving.svg" />
       </figure>
     </b-loading>
     <section class="hero is-fullheight">
@@ -18,9 +27,9 @@
         <div class="container">
           <div class="columns is-mobile is-multiline is-vcentered">
             <div class="column is-full"></div>
-            <div class="column is-full">
+            <div v-if="!isMobile" class="column is-full">
               <div class="columns is-mobile is-vcentered">
-                <div class="column">
+                <div class="column is-10">
                   <b-taglist :attached="!isMobile">
                     <b-tag
                       class="animated zoomIn has-text-weight-bold"
@@ -31,6 +40,7 @@
                         {{ lsGame.player }}
                       </p>
                     </b-tag>
+                    <div class="column is-full-mobile" v-if="isMobile"></div>
                     <b-tag
                       class="animated zoomIn has-text-weight-light"
                       size="is-large"
@@ -38,35 +48,50 @@
                     >
                       <p id="points">{{ lsGame.score }} pts.</p>
                     </b-tag>
+                    <b-tag
+                      class="animated zoomIn has-text-weight-light"
+                      id="plus"
+                      size="is-large"
+                      type="is-white"
+                      v-show="scoreAct !== 0"
+                    >
+                      <p class="subtitle">+{{ scoreAct }}</p>
+                    </b-tag>
                   </b-taglist>
                 </div>
                 <div class="column ">
                   <b-button
-                    @click="isPaused = !isPaused"
+                    :icon-right="isMobile ? '' : 'pause'"
+                    @click="pauseGame"
                     class="is-pulled-right animated zoomIn"
                     icon-pack="fas"
-                    icon-right="pause"
                     id="pause"
                     type="is-info"
                     v-if="showPause"
                   >
-                    Pause game
+                    <b-icon icon="pause" pack="fas" v-if="isMobile"></b-icon>
+                    <p v-else>Pause game</p>
                   </b-button>
                   <b-button
+                    :icon-right="isMobile ? '' : 'angle-double-right'"
                     @click="goNext"
                     class="is-pulled-right next"
                     icon-pack="fas"
-                    icon-right="angle-double-right"
                     id="next"
                     type="is-success"
                     v-show="showNext"
                   >
-                    Next picture
+                    <b-icon
+                      icon="angle-double-right"
+                      pack="fas"
+                      v-if="isMobile"
+                    ></b-icon>
+                    <p v-else>Next picture</p>
                   </b-button>
                 </div>
               </div>
             </div>
-            <div class="column is-full">
+            <div v-if="!isMobile" class="column is-full">
               <progress
                 :max="lsGame.steps"
                 :title="lsGame.stepsDone + '/' + lsGame.steps + ' pictures'"
@@ -74,21 +99,8 @@
                 class="progress is-primary animated zoomInUp"
               ></progress>
             </div>
-            <div class="column is-full game">
+            <div class="column is-full">
               <div class="columns">
-                <div
-                  class="column is-half animated bounceInUp has-text-centered-mobile"
-                >
-                  <figure>
-                    <img
-                      :alt="gamePhoto.photo.description"
-                      :src="gamePhoto.photo.url"
-                    />
-                  </figure>
-                  <h1 class="subtitle is-7" style="color:white">
-                    Hint: {{ gamePhoto.photo.description }}
-                  </h1>
-                </div>
                 <div class="column is-half animated bounceInDown">
                   <gmap-map
                     :center="{
@@ -111,6 +123,104 @@
                       v-for="(marker, index) in markers"
                     />
                   </gmap-map>
+                </div>
+                <div v-if="isMobile" class="column">
+                  <div class="columns is-mobile is-multiline is-vcentered">
+                    <div class="column is-full">
+                      <div class="columns is-mobile is-vcentered">
+                        <div class="column is-10">
+                          <b-taglist :attached="!isMobile">
+                            <b-tag
+                              class="animated zoomIn has-text-weight-bold"
+                              size="is-large"
+                              type="is-primary"
+                            >
+                              <p id="name">
+                                {{ lsGame.player }}
+                              </p>
+                            </b-tag>
+                            <div
+                              class="column is-full-mobile"
+                              v-if="isMobile"
+                            ></div>
+                            <b-tag
+                              class="animated zoomIn has-text-weight-light"
+                              size="is-large"
+                              type="is-warning"
+                            >
+                              <p id="points">{{ lsGame.score }} pts.</p>
+                            </b-tag>
+                            <b-tag
+                              class="animated zoomIn has-text-weight-light"
+                              id="plus"
+                              size="is-large"
+                              type="is-white"
+                              v-show="scoreAct !== 0"
+                            >
+                              <p class="subtitle">+{{ scoreAct }}</p>
+                            </b-tag>
+                          </b-taglist>
+                        </div>
+                        <div class="column ">
+                          <b-button
+                            :icon-right="isMobile ? '' : 'pause'"
+                            @click="pauseGame"
+                            class="is-pulled-right animated zoomIn"
+                            icon-pack="fas"
+                            id="pause"
+                            type="is-info"
+                            v-if="showPause"
+                          >
+                            <b-icon
+                              icon="pause"
+                              pack="fas"
+                              v-if="isMobile"
+                            ></b-icon>
+                            <p v-else>Pause game</p>
+                          </b-button>
+                          <b-button
+                            :icon-right="isMobile ? '' : 'angle-double-right'"
+                            @click="goNext"
+                            class="is-pulled-right next"
+                            icon-pack="fas"
+                            id="next"
+                            type="is-success"
+                            v-show="showNext"
+                          >
+                            <b-icon
+                              icon="angle-double-right"
+                              pack="fas"
+                              v-if="isMobile"
+                            ></b-icon>
+                            <p v-else>Next picture</p>
+                          </b-button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column is-full">
+                      <progress
+                        :max="lsGame.steps"
+                        :title="
+                          lsGame.stepsDone + '/' + lsGame.steps + ' pictures'
+                        "
+                        :value="lsGame.stepsDone"
+                        class="progress is-primary animated zoomInUp"
+                      ></progress>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="column is-half animated bounceInUp has-text-centered-mobile has-text-right game"
+                >
+                  <figure>
+                    <img
+                      :alt="gamePhoto.photo.description"
+                      :src="gamePhoto.photo.url"
+                    />
+                  </figure>
+                  <h1 class="subtitle is-7" style="color:white">
+                    Hint: {{ gamePhoto.photo.description }}
+                  </h1>
                 </div>
               </div>
             </div>
@@ -155,26 +265,44 @@ export default {
       ]
     },
     isPaused: false,
+    isSaving: false,
     showPause: true,
-    showNext: false
+    showNext: false,
+    startTime: Date.now(),
+    seconds: 0,
+    scoreAct: 0,
+    pauseTime: null,
+    timePaused: 0
   }),
   created() {
-    this.imgIndex = Math.floor(Math.random() * this.lsGame.photos.length);
-    this.gamePhoto = this.lsGame.photos[this.imgIndex];
+    if (
+      localStorage.getItem("actualGame") !== null &&
+      this.lsGame.photos.length !== 0
+    ) {
+      this.imgIndex = Math.floor(Math.random() * this.lsGame.photos.length);
+      this.gamePhoto = this.lsGame.photos[this.imgIndex];
+    } else {
+      this.$router.push({ name: "home" });
+    }
   },
   methods: {
     goNext() {
       if (this.lsGame.stepsDone < this.lsGame.steps) {
+        this.markers = [];
         const self = this;
         this.animateCSS("#next", "zoomOut", "faster", function() {
           self.showNext = false;
         });
-        this.animateCSS(".game", "fadeOutLeft", "", function() {
+        const efOut = this.isMobile ? "fadeOutLeft" : "fadeOutDown";
+        this.animateCSS(".game", efOut, "", function() {
           self.imgIndex = Math.floor(Math.random() * self.lsGame.photos.length);
           self.gamePhoto = self.lsGame.photos[self.imgIndex];
-          self.markers = [];
           self.showPause = true;
-          self.animateCSS(".game", "fadeInRight", "", function() {});
+          const efIn = self.isMobile ? "fadeInRight" : "fadeInDown";
+          const itSelf = self;
+          self.animateCSS(".game", efIn, "", function() {
+            itSelf.startTime = Date.now();
+          });
         });
       } else {
         this.$dialog.confirm({
@@ -189,11 +317,13 @@ export default {
           hasIcon: true,
           onCancel: async () => {
             const self = this;
+            this.isSaving = true;
             await this.$store.dispatch("UPDATE_GAME", {
               id: this.lsGame.id,
               score: this.lsGame.score,
               status: 2
             });
+            this.isSaving = false;
             localStorage.removeItem("actualGame");
             this.animateCSS(".hero-body", "bounceOut", "", function() {
               self.$router.push({ name: "home" });
@@ -201,11 +331,13 @@ export default {
           },
           onConfirm: async () => {
             const self = this;
+            this.isSaving = true;
             await this.$store.dispatch("UPDATE_GAME", {
               id: this.lsGame.id,
               score: this.lsGame.score,
               status: 0
             });
+            this.isSaving = false;
             localStorage.removeItem("actualGame");
             this.animateCSS(".hero-body", "bounceOut", "", function() {
               self.$router.push({ name: "home" });
@@ -216,20 +348,35 @@ export default {
     },
     computeScore() {
       let distance = this.getDistance(this.markers[0], this.markers[1]);
-      this.scoreAct = 0;
 
       if (distance < this.lsGame.distance) {
-        // si la distance est inférieure à la distance du level
         this.scoreAct += 5;
       } else if (distance < 2 * this.lsGame.distance) {
-        // si la distance est inférieure  2 * la distance du level
         this.scoreAct += 3;
       } else if (distance < 3 * this.lsGame.distance) {
-        // si la distance est inférieure  3 * la distance du level
         this.scoreAct += 1;
       }
 
+      const timePlayed = this.seconds - this.timePaused;
+
+      if (timePlayed < 15) {
+        this.scoreAct *= 4;
+      } else if (timePlayed >= 15 && timePlayed < 30) {
+        this.scoreAct *= 2;
+      } else if (timePlayed >= 30 && timePlayed < 60) {
+        this.scoreAct *= 1;
+      } else if (timePlayed > 60) {
+        this.scoreAct = 0;
+      }
+
       this.lsGame.score += this.scoreAct;
+      const self = this;
+      this.animateCSS("#plus", "fadeInUp", "fast", function() {
+        const itSelf = self;
+        self.animateCSS("#plus", "fadeOutUp", "fast", function() {
+          itSelf.scoreAct = 0;
+        });
+      });
     },
     getDistance(p1, p2) {
       const rad = function(x) {
@@ -249,6 +396,7 @@ export default {
     },
     async getResult(cursorPos) {
       if (this.markers.length < 2) {
+        this.stopTimer();
         const self = this;
         this.animateCSS("#points", "rubberBand", "", function() {});
         this.animateCSS("#next", "zoomIn", "faster", function() {});
@@ -274,6 +422,20 @@ export default {
         this.$store.commit("SET_ACTUAL_GAME", this.lsGame);
         this.lsGame = this.actualGame;
       }
+    },
+    stopTimer() {
+      let millis = Date.now() - this.startTime;
+      this.seconds = Math.floor(millis / 1000);
+    },
+    stopPause() {
+      let millis = Date.now() - this.pauseTime;
+      this.timePaused = Math.floor(millis / 1000);
+      this.pauseTime = null;
+      this.isPaused = !this.isPaused;
+    },
+    pauseGame() {
+      this.pauseTime = Date.now();
+      this.isPaused = !this.isPaused;
     }
   }
 };
@@ -286,7 +448,7 @@ export default {
 }
 
 .myLoading {
-  opacity: 20%;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 progress {
@@ -303,8 +465,7 @@ img {
   max-height: 350px;
 }
 
-#name {
-  overflow: hidden;
-  max-width: 100px;
+.game {
+  min-height: 396px;
 }
 </style>
