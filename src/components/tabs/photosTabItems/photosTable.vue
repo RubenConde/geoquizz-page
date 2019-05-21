@@ -51,22 +51,35 @@
           class="column"
         >
           <b-field label="Photos"></b-field>
-          <div class="columns is-mobile is-multiline" id="gallery">
-            <div
-              :class="{ 'is-one-third': !isMobile, 'is-half': isMobile }"
-              :key="photo.photo.id"
-              class="column"
-              v-for="photo in photosBySeries"
-            >
-              <figure class="image">
-                <img
-                  :src="photo.photo.url"
-                  @click="sendInfoModal(photo.photo.id)"
-                  alt="Photo"
-                />
-              </figure>
+          <div id="gallery">
+            <div class="gallery">
+              <img
+                @click="sendInfoModal(photo.photo.id)"
+                v-for="photo in photosBySeries"
+                :src="photo.photo.url"
+                alt="Photo"
+                width="100%"
+                height="auto"
+                class="gallery-img"
+              />
             </div>
           </div>
+          <!--          <div class="columns is-mobile is-multiline">-->
+          <!--            <div-->
+          <!--              :class="{ 'is-one-third': !isMobile, 'is-half': isMobile }"-->
+          <!--              :key="photo.photo.id"-->
+          <!--              class="column"-->
+          <!--              v-for="photo in photosBySeries"-->
+          <!--            >-->
+          <!--              <figure class="image">-->
+          <!--                <img-->
+          <!--                  :src="photo.photo.url"-->
+          <!--                  @click="sendInfoModal(photo.photo.id)"-->
+          <!--                  alt="Photo"-->
+          <!--                />-->
+          <!--              </figure>-->
+          <!--            </div>-->
+          <!--          </div>-->
         </div>
       </div>
       <b-modal
@@ -184,5 +197,55 @@ img {
     transparent 75%,
     transparent
   );
+}
+
+.gallery {
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  -webkit-column-gap: 10px;
+  -moz-column-gap: 10px;
+  column-gap: 10px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  transition: 500ms;
+  margin-bottom: 10px;
+  opacity: 1;
+  page-break-inside: avoid; /* For Firefox. */
+  -webkit-column-break-inside: avoid; /* For Chrome & friends. */
+  break-inside: avoid; /* For standard browsers like IE. :-) */
+}
+
+.gallery img:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 767px) {
+  .gallery {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+  .gallery div {
+    margin: 0;
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .gallery {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+  }
+  .gallery div {
+    margin: 0;
+    width: 200px;
+  }
 }
 </style>
