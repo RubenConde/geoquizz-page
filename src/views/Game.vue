@@ -61,7 +61,7 @@
                 </div>
                 <div class="column ">
                   <b-button
-                    :icon-right="isMobile ? '' : 'pause'"
+                    icon-right="pause"
                     @click="pauseGame"
                     class="is-pulled-right animated zoomIn"
                     icon-pack="fas"
@@ -69,11 +69,10 @@
                     type="is-info"
                     v-if="showPause"
                   >
-                    <b-icon icon="pause" pack="fas" v-if="isMobile"></b-icon>
-                    <p v-else>Pause game</p>
+                    Pause game
                   </b-button>
                   <b-button
-                    :icon-right="isMobile ? '' : 'angle-double-right'"
+                    icon-right="angle-double-right"
                     @click="goNext"
                     class="is-pulled-right next"
                     icon-pack="fas"
@@ -81,12 +80,7 @@
                     type="is-success"
                     v-show="showNext"
                   >
-                    <b-icon
-                      icon="angle-double-right"
-                      pack="fas"
-                      v-if="isMobile"
-                    ></b-icon>
-                    <p v-else>Next picture</p>
+                    Next picture
                   </b-button>
                 </div>
               </div>
@@ -128,7 +122,7 @@
                   <div class="columns is-mobile is-multiline is-vcentered">
                     <div class="column is-full">
                       <div class="columns is-mobile is-vcentered">
-                        <div class="column is-10">
+                        <div class="column">
                           <b-taglist :attached="!isMobile">
                             <b-tag
                               class="animated zoomIn has-text-weight-bold"
@@ -163,7 +157,7 @@
                         </div>
                         <div class="column ">
                           <b-button
-                            :icon-right="isMobile ? '' : 'pause'"
+                            icon-right="pause"
                             @click="pauseGame"
                             class="is-pulled-right animated zoomIn"
                             icon-pack="fas"
@@ -171,15 +165,10 @@
                             type="is-info"
                             v-if="showPause"
                           >
-                            <b-icon
-                              icon="pause"
-                              pack="fas"
-                              v-if="isMobile"
-                            ></b-icon>
-                            <p v-else>Pause game</p>
+                            Pause game
                           </b-button>
                           <b-button
-                            :icon-right="isMobile ? '' : 'angle-double-right'"
+                            icon-right="angle-double-right"
                             @click="goNext"
                             class="is-pulled-right next"
                             icon-pack="fas"
@@ -187,12 +176,7 @@
                             type="is-success"
                             v-show="showNext"
                           >
-                            <b-icon
-                              icon="angle-double-right"
-                              pack="fas"
-                              v-if="isMobile"
-                            ></b-icon>
-                            <p v-else>Next picture</p>
+                            Next picture
                           </b-button>
                         </div>
                       </div>

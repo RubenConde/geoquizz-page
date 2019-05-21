@@ -38,7 +38,12 @@
               Instructions
             </a>
             <hr class="navbar-divider" />
-            <a class="navbar-item"> API </a>
+            <a
+              href="https://rubenconde.github.io/geoquizzAPI/"
+              class="navbar-item"
+            >
+              API
+            </a>
           </div>
         </div>
       </div>

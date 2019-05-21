@@ -4,7 +4,7 @@ const GameRepository = RepositoryFactory.get("games");
 
 const state = {
   games: [],
-  bests:[],
+  bests: [],
   actualGame: {},
   game: {}
 };
