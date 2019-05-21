@@ -19,6 +19,16 @@
       <b-field label="Maximum distance (meters)">
         <b-input type="number" v-model="diffChanged.distance"></b-input>
       </b-field>
+      <b-field>
+        <b-button
+                @click="confirmCustomDelete"
+                class="is-pulled-right"
+                icon-right="delete"
+                type="is-danger"
+        >
+          Delete
+        </b-button>
+      </b-field>
     </section>
     <footer class="modal-card-foot">
       <b-button @click="$parent.close()" size="is-small" type="is-danger"
@@ -66,7 +76,27 @@ export default {
             this.showSuccess(response.message);
           } else this.showError(response.message);
         });
-    }
+    },
+    confirmCustomDelete() {
+      this.$dialog.confirm({
+        title: "Deleting difficulty",
+        message:
+                "Are you sure you want to <b>delete</b> this difficulty? This action cannot be undone.",
+        confirmText: "Delete difficulty",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => this.delDiff()
+      });
+    },
+    async delDiff() {
+      await this.$store
+              .dispatch("DELETE_DIFFICULTY", this.selectedDiff.id)
+              .then(async () => {
+                await this.getInfo();
+                this.showSuccess("Difficulty deleted successfully");
+                this.$parent.close();
+              });
+    },
   }
 };
 </script>

@@ -24,22 +24,36 @@
         >
         </gmap-autocomplete>
       </b-field>
-      <gmap-map
-        :center="{ lat: seriesChanged.latitude, lng: seriesChanged.longitude }"
-        :options="mapOptions"
-        :zoom="seriesChanged.zoom"
-        @zoom_changed="changeZoomLevel"
-        class="map"
-      >
-        <GmapMarker
-          :draggable="true"
-          :position="{
+      <b-field>
+        <gmap-map
+          :center="{
             lat: seriesChanged.latitude,
             lng: seriesChanged.longitude
           }"
-          @dragend="changeMarkerPosition"
-        />
-      </gmap-map>
+          :options="mapOptions"
+          :zoom="seriesChanged.zoom"
+          @zoom_changed="changeZoomLevel"
+          class="map"
+        >
+          <GmapMarker
+            :draggable="true"
+            :position="{
+              lat: seriesChanged.latitude,
+              lng: seriesChanged.longitude
+            }"
+            @dragend="changeMarkerPosition"
+          /> </gmap-map
+      ></b-field>
+      <b-field>
+        <b-button
+          @click="confirmCustomDelete"
+          class="is-pulled-right"
+          icon-right="delete"
+          type="is-danger"
+        >
+          Delete
+        </b-button>
+      </b-field>
     </section>
     <footer class="modal-card-foot">
       <b-button @click="$parent.close()" size="is-small" type="is-danger"
@@ -94,6 +108,26 @@ export default {
     },
     changeZoomLevel(e) {
       this.seriesChanged.zoom = e;
+    },
+    confirmCustomDelete() {
+      this.$dialog.confirm({
+        title: "Deleting series",
+        message:
+          "Are you sure you want to <b>delete</b> this series? This action cannot be undone.",
+        confirmText: "Delete series",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => this.delSeries()
+      });
+    },
+    async delSeries() {
+      await this.$store
+        .dispatch("DELETE_SERIES", this.selectedSeries.id)
+        .then(async () => {
+          await this.getInfo();
+          this.showSuccess("Series deleted successfully");
+          this.$parent.close();
+        });
     },
     async modifSeries() {
       let seriesUpdated = {
