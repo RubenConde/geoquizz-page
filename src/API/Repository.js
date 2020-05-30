@@ -1,11 +1,13 @@
-import axios from "axios/index";
+import axios from 'axios/index';
 
 const baseURL = process.env.VUE_APP_GEOQUIZZ_BASE_URL;
+const token = localStorage.getItem('token');
 
 export default axios.create({
-  baseURL,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  }
+   baseURL,
+   headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+   },
 });
