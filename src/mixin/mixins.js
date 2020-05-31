@@ -43,7 +43,6 @@ export default {
          });
       },
       async getInfo() {
-         await this.$store.commit('SET_TOKEN', this.token);
          await this.$store.dispatch('GET_SERIES', { fields: '*', limit: 1000000 });
          await this.$store.dispatch('GET_DIFFICULTIES', { fields: '*', limit: 1000000 });
          await this.$store.dispatch('GET_BESTS', {

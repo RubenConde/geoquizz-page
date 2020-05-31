@@ -11,7 +11,7 @@ export default {
       return Repository.post('/register', data).catch((error) => error.response);
    },
    logout() {
-      const token = localStorage.getItem('token');
+      const token = atob(localStorage.getItem(btoa('token')));
       return Repository.get('/logout', { headers: { Authorization: `Bearer ${token}` } }).catch(
          (error) => error.response
       );

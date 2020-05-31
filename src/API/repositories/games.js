@@ -16,7 +16,7 @@ export default {
       return Repository.put(resource + '/' + gameId, data).catch((error) => error.response);
    },
    deleteGame(gameId) {
-      const token = localStorage.getItem('token');
+      const token = atob(localStorage.getItem(btoa('token')));
 
       Repository.delete(resource + '/' + gameId, { headers: { Authorization: `Bearer ${token}` } });
    },
