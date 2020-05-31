@@ -211,7 +211,7 @@ export default {
    name: 'Game',
    components: { BTag, BTaglist, BLoading, BButton, BIcon, NavBar },
    data: () => ({
-      lsGame: JSON.parse(localStorage.getItem('actualGame')),
+      lsGame: JSON.parse(atob(localStorage.getItem(btoa('actualGame')))),
       imgIndex: 0,
       gamePhoto: {},
       markers: [],
@@ -243,7 +243,7 @@ export default {
       timePaused: 0,
    }),
    created() {
-      if (localStorage.getItem('actualGame') !== null && this.lsGame.photos.length !== 0) {
+      if (atob(localStorage.getItem(btoa('actualGame'))) !== null && this.lsGame.photos.length !== 0) {
          this.imgIndex = Math.floor(Math.random() * this.lsGame.photos.length);
          this.gamePhoto = this.lsGame.photos[this.imgIndex];
       } else {
@@ -289,7 +289,7 @@ export default {
                      status: 2,
                   });
                   this.isSaving = false;
-                  localStorage.removeItem('actualGame');
+                  localStorage.removeItem(btoa('actualGame'));
                   this.animateCSS('.hero-body', 'bounceOut', '', function() {
                      self.$router.push({ name: 'home' });
                   });
@@ -304,7 +304,7 @@ export default {
                   });
                   await this.getInfo();
                   this.isSaving = false;
-                  localStorage.removeItem('actualGame');
+                  localStorage.removeItem(btoa('actualGame'));
                   this.animateCSS('.hero-body', 'bounceOut', '', function() {
                      self.$router.push({ name: 'home' });
                   });

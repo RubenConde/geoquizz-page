@@ -1,7 +1,7 @@
 import axios from 'axios/index';
 
 const baseURL = process.env.VUE_APP_GEOQUIZZ_BASE_URL;
-const token = localStorage.getItem('token');
+const token = atob(localStorage.getItem(btoa('token')));
 
 export default axios.create({
    baseURL,

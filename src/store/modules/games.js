@@ -21,7 +21,7 @@ const mutations = {
    },
    SET_ACTUAL_GAME: (state, payload) => {
       state.actualGame = payload;
-      localStorage.setItem('actualGame', JSON.stringify(payload));
+      localStorage.setItem(btoa('actualGame'), btoa(JSON.stringify(payload)));
    },
 };
 const actions = {

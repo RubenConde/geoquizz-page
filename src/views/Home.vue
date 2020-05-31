@@ -42,7 +42,7 @@ export default {
       navBar,
    },
    mounted() {
-      if (localStorage.getItem('actualGame')) {
+      if (localStorage.getItem(btoa('actualGame'))) {
          Dialog.confirm({
             title: 'Game started!!',
             message: 'You have already a game started, would you like to continue it?',
@@ -50,7 +50,7 @@ export default {
             type: 'is-info',
             hasIcon: true,
             onCancel: () => {
-               localStorage.removeItem('actualGame');
+               localStorage.removeItem(btoa('actualGame'));
             },
             onConfirm: () => {
                const self = this;

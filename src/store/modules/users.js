@@ -4,7 +4,7 @@ import axios from 'axios';
 const UserRepository = RepositoryFactory.get('users');
 
 const state = {
-   token: localStorage.getItem('token') || '',
+   token: localStorage.getItem(btoa('token')) || false,
    user: {},
 };
 const getters = {
@@ -14,12 +14,12 @@ const mutations = {
    SET_TOKEN: (state, payload) => {
       state.token = payload;
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + payload;
-      localStorage.setItem('token', payload);
+      localStorage.setItem(btoa('token'), btoa(payload));
    },
    DELETE_TOKEN: (state) => {
       state.token = '';
       delete axios.defaults.headers.common['Authorization'];
-      localStorage.removeItem('token');
+      localStorage.removeItem(btoa('token'));
    },
    SET_USER: (state, payload) => {
       state.user = payload;

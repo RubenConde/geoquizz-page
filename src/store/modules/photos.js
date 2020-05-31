@@ -52,7 +52,8 @@ const actions = {
    UPLOAD_PHOTO: async (context, payload) => {
       let data;
       await CloudinaryRepository.upload(payload).then((response) => {
-         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+         axios.defaults.headers.common['Authorization'] =
+            'Bearer ' + atob(localStorage.getItem(btoa('token')));
          data = response.data;
       });
       return data;
