@@ -54,6 +54,12 @@ router.beforeEach((to, from, next) => {
          return;
       }
       next('/login');
+   } else if (to.matched.some((record) => record.name === 'login')) {
+      if (!store.getters.isAuthenticated) {
+         next();
+         return;
+      }
+      next('/admin');
    } else {
       next();
    }
