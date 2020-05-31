@@ -49,13 +49,17 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
    if (to.matched.some((record) => record.meta.requiresAuth)) {
-      console.log(store.getters.isAuthenticated);
-
       if (store.getters.isAuthenticated) {
          next();
          return;
       }
       next('/login');
+   } else if (to.matched.some((record) => record.name === 'login')) {
+      if (!store.getters.isAuthenticated) {
+         next();
+         return;
+      }
+      next('/admin');
    } else {
       next();
    }
