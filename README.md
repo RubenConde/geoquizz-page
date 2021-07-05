@@ -11,5 +11,5 @@ GéoQuizz was created with the framework [Vue.js](https://vuejs.org/) using its 
 GéoQuizz has a [MIT license](https://opensource.org/licenses/MIT), so its code can be used as a base for other projects without any problem.
 
 <p align="center">
-Don't waste any more time, go to <a href="https://geoquizz.rubencondemag.info/">GéoQuizz</a> and play!
+Don't waste any more time, go to <a href="https://geoquizz.rubenconde.com/">GéoQuizz</a> and play!
 </p>
